@@ -1,29 +1,15 @@
 import React from 'react';
-import {RouterProvider, createBrowserRouter} from 'react-router-dom'
+import {Outlet, Route, Routes} from 'react-router-dom'
 import ChatIndex from './chat/ChatIndex';
 import Profile from './profile/Profile';
-import Login from './login/login';
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <ChatIndex />,
-  },
-  {
-    path: "/profile",
-    element: <Profile />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  }
-]);
+import Header from './header/header';
 
 function App() {
   return (
-    <React.StrictMode>
-      <RouterProvider router={router} />
-    </React.StrictMode>
+    <div>
+      <Header />
+      <Outlet />
+    </div>
   );
 }
 

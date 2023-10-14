@@ -1,13 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {BrowserRouter, Router, Route, Routes} from 'react-router-dom'
+import App from './App';
+import ChatIndex from './chat/ChatIndex';
+import Profile from './profile/Profile';
+import Login from './login/login';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App />}>
+          <Route path='' element={<ChatIndex />} />
+          <Route path='profile' element={<Profile />} />
+        </Route>
+        <Route path='/login' element={<Login />} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
