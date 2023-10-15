@@ -4,9 +4,9 @@ import ChatRoom from "./chatRoom/ChatRoom";
 
 export default function ChatIndex(params) {
     return(
-        <div className="flex flex-row">
+        <div className=" pl-20 flex flex-row " >
             <ChatList />
-            <ChatRoom />
+            <ChatRoom/>
         </div>
     )
 }
