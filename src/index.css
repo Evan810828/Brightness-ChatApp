@@ -15,6 +15,10 @@ body::-webkit-scrollbar{
   display: none !important;
 }
 
+div::-webkit-scrollbar{
+  display: none !important;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
