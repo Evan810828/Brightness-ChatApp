@@ -1,12 +1,10 @@
 import React from 'react';
 import {Outlet, Route, Routes} from 'react-router-dom'
-import ChatIndex from './chat/ChatIndex';
-import Profile from './profile/Profile';
-import Header from './header/header';
+import Header from './components/header/header';
 
 function App() {
   return (
-    <div>
+    <div className='flex'>
       <Header />
       <Outlet />
     </div>
