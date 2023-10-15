@@ -19,7 +19,7 @@ export default function Header() {
 
     return (
         // header component
-        <div className="w-[60px] h-screen bg-[#DBEAFE] flex flex-col items-center">
+        <div className="fixed w-[60px] h-screen bg-[#DBEAFE] flex flex-col items-center">
             <Image className='pb-8 pt-2' src={require('../../logo.png')} />
             <div className='h-[120px] flex flex-col justify-between'>
                 {indexItem.map((item, i) => (
