@@ -1,69 +1,156 @@
-import { List, Avatar, Button, ButtonGroup } from '@douyinfe/semi-ui';
-
+import { List, Avatar, Button, ButtonGroup, SideSheet,TextArea } from '@douyinfe/semi-ui';
+import React, { useState } from 'react';
 
 export default function ChatRoom(params) {
     const data = [
-        // eslint-disable-next-line react/jsx-key
-        [<p
-            style={{
-                color: 'var(--semi-color-text-2)',
-                margin: '4px 0',
-                width: 420,
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-            }}
-        >
-            Dummy last chat message.
-        </p>,<p>
-            Yesterday
-        </p>,<p>
-            Dummy Chat1
-        </p>],
-        // eslint-disable-next-line react/jsx-key
-        [<p style={{ color: 'var(--semi-color-text-2)', margin: '4px 0', width: 500 }}>
-            Dummy last chat message.
-        </p>,<p>
-            2023/10/12
-        </p>,<p>
-            Dummy Chat2
-        </p>],
-        // eslint-disable-next-line react/jsx-key
-        [<p style={{ color: 'var(--semi-color-text-2)', margin: '4px 0', width: 500 }}>
-            Dummy last chat message.
-        </p>,<p>
-            2023/10/11
-        </p>,<p>
-            Dummy Chat3
-        </p>],
-        // eslint-disable-next-line react/jsx-key
-        
+        {
+            id: "User 1",
+            avatar: 'https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp',
+            message: "Dummy Message 1",
+            time: "Yesterday",
+            yours: true
+        },
+        {
+            id: "User 2",
+            avatar: 'https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp',
+            message: "Dummy Message 1",
+            time: "Yesterday",
+            yours: false
+
+        },
+        {
+            id: "User 3",
+            avatar: 'https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp',
+            message: "Dummy Message 1",
+            time: "Yesterday",
+            yours: false
+        },
+        {
+            id: "User 2",
+            avatar: 'https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp',
+            message: "Dummy Message 1",
+            time: "Yesterday",
+            yours: false
+        },
+        {
+            id: "User 3",
+            avatar: 'https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp',
+            message: "Dummy Message 1",
+            time: "Yesterday",
+            yours: false
+        },
+        {
+            id: "User 2",
+            avatar: 'https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp',
+            message: "Dummy Message 1",
+            time: "Yesterday",
+            yours: false
+        },
+        {
+            id: "User 2",
+            avatar: 'https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp',
+            message: "Dummy Message 1",
+            time: "Yesterday",
+            yours: false
+        },
+        {
+            id: "User 2",
+            avatar: 'https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp',
+            message: "Dummy Message 1",
+            time: "Yesterday",
+            yours: true
+        },
+        {
+            id: "User 1",
+            avatar: 'https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp',
+            message: "Dummy Message 1",
+            time: "Yesterday",
+            yours: true
+        },
+        {
+            id: "User 4",
+            avatar: 'https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp',
+            message: "Dummy Message 1",
+            time: "Yesterday",
+            yours: false
+        },
+        {
+            id: "User 1",
+            avatar: 'https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp',
+            message: "Dummy Message 1",
+            time: "Yesterday",
+            yours: true
+        }
     ];
 
-    return(
-    <div className="w-3/5" style={{padding: 12, border: '1px solid var(--semi-color-border)', margin: 12 }}>
-        
-                <List 
-                    dataSource={data}
-                    renderItem={item => 
-                        (
-                        <List.Item onClick={()=>console.log("Clicked")}
-                            header={<Avatar color="blue">CR</Avatar>}
-                            main={
-                                <div>
-                                    <span style={{ color: 'var(--semi-color-text-0)', fontWeight: 500 }}>{item[2]}</span>
-                                    {item[0]}
-                                </div>
+    const [visible, setVisible] = useState(false);
+    const change = () => {
+        setVisible(!visible);
+    };
+    const getContainer = () => {
+        console.log(document.querySelector('#sidesheet-container'))
+        return document.querySelector('#sidesheet-container');
+    };
+    return (
+        <div  className="flex flex-row w-[72%] h-[100%] pl-3">
+            <div className="w-[70%] h-[100%] pl-3">
+                <div className='flex flex-row '>
+                    <div className='w-[50%] text-white text-2xl font-semibold ml-5 mt-3 '>
+                        Chatroom Name here
+                    </div>
+                    <div className="w-[50%] w-[50%] text-white text-2xl font-semibold ml-5 mt-3 text-right" onClick={change}>...</div>
+                </div>
+
+                <div className='flex flex-col w-full bg-white rounded-xl shadow-xl w-full my-2 mx-3 py-2 px-2 h-[90.5%]'>
+                     <div id='message-display-area' className='flex flex-col overflow-y-auto max-h-[79%] border border-gray-400 '>
+                        {data.map((item) => {
+                            if(!item.yours){
+                                return(
+                                    <div className='hover:bg-slate-200 rounded-lg px-3 py-2 flex justify-between cursor-pointer mb-2' onClick={()=>console.log("Clicked")} >
+                                        <div className='flex'>
+                                            <Avatar src={item.avatar} />
+                                            <div className='flex flex-col ml-2'>
+                                                <span>{item.id}</span>
+                                                <span className='text-sm font-light text-slate-500'>{item.message}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
                             }
-                            extra={
-                                <ButtonGroup theme="borderless">
-                                    {item[1]}
-                                </ButtonGroup>
+                            else{
+                                return(
+                                    <div className='hover:bg-slate-200 rounded-lg px-3 py-2 flex justify-end cursor-pointer mb-2' onClick={()=>console.log("Clicked")} >
+                                        <div className='flex'>
+                                            <div className='flex flex-col ml-2'>
+                                                <span>{item.id}</span>
+                                                <span className='text-sm font-light text-slate-500'>{item.message}</span>
+                                            </div>
+                                            <Avatar src={item.avatar} />
+                                        </div>
+                                    </div>
+                                )
                             }
-                        />
-                    )}
-                />
+                            
+                            })}
+
+                     </div>
+                     <div className='h-[1%]'>
+
+                     </div>
+                     <div className='border border-gray-400 h-[20%]'>
+                     <TextArea maxCount={100} showClear  className='h-[100%]'/>
+
+                    </div>   
+                </div>
+
                 
             </div>
+            <div id="sidesheet-container" className="relative top-[5%]  left-[2%] w-[30%] max-h-[90%] bg-[#006DF0]">
+                <SideSheet title="滑动侧边栏"   width={380} visible={visible} onCancel={change} getPopupContainer={ getContainer} placement='left'>
+
+                </SideSheet>
+            </div>
+        </div>
+
     )
 }
