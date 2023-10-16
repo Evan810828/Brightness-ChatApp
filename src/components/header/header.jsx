@@ -1,4 +1,4 @@
-import { IconUser, IconHome, IconKey } from '@douyinfe/semi-icons';
+import { IconUser, IconHome, IconKey, IconUserGroup } from '@douyinfe/semi-icons';
 import { Image } from '@douyinfe/semi-ui';
 
 const indexItem = [
@@ -13,6 +13,12 @@ const indexItem = [
         icon: <IconUser size='extra-large' className='cursor-pointer' />,
         iconSelected: <IconUser size='extra-large' className='cursor-pointer text-white' />,
         url: '/profile'
+    },
+    {
+        id: 3,
+        icon: <IconUserGroup size='extra-large' className='cursor-pointer' />,
+        iconSelected: <IconUserGroup size='extra-large' className='cursor-pointer text-white' />,
+        url: '/social'
     }
 ]
 
@@ -22,7 +28,7 @@ export default function Header() {
         // header component
         <div className="fixed w-[60px] h-screen bg-[#F1F1F1] flex flex-col items-center">
             <Image className='pb-8 pt-2' src={require('../../logo.png')} />
-            <div className='h-[120px] flex flex-col justify-between'>
+            <div className='h-[180px] flex flex-col justify-between'>
                 {indexItem.map((item, i) => (
                     <div 
                         key={item.id} 
