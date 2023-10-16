@@ -1,30 +1,35 @@
-import { IconMail, IconDelete } from '@douyinfe/semi-icons';
+import { IconMute, IconVolume2, IconCopyAdd } from '@douyinfe/semi-icons';
 
 const friendList = [
     {
         name: "John",
-        avatar: "https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp",
+        avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTj_UkBWZBjd-K5TxEQuPAUd6Gj7BKFBsR49A&usqp=CAU",
         status: "online",
+        muted: false,
     },
     {
-        name: "John",
-        avatar: "https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp",
+        name: "Sara",
+        avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-3H6IHZNPQv3QBicSDtkTtsErOzQj1NrZNw&usqp=CAU",
         status: "online",
+        muted: false,
     },
     {
-        name: "John",
-        avatar: "https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp",
+        name: "William",
+        avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXM5VoIfvhRC2p7byLim5MD2WNIYW949cEIg&usqp=CAU",
+        status: "online",
+        muted: false,
+    },
+    {
+        name: "Mia",
+        avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9wvt48MJrdhdoESZm1YX_N9ext4H4IxE0uA&usqp=CAU",
         status: "offline",
+        muted: false,
     },
     {
-        name: "John",
-        avatar: "https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp",
-        status: "online",
-    },
-    {
-        name: "John",
-        avatar: "https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp",
+        name: "Mark",
+        avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0_QPt__Da9AIiAsMlwkeY_0GHYLUNCMMOMw&usqp=CAU",
         status: "offline",
+        muted: true,
     },
 
 ]
@@ -44,8 +49,11 @@ export default function Friends() {
                             <div className="text-lg relative right-2">{item.name}</div>
                         </div>
                         <div className='w-16 flex justify-between'>
-                            <IconMail className='text-[#78B9EB] cursor-pointer hover:scale-125' size='large' />
-                            <IconDelete className='text-red-400 cursor-pointer hover:scale-125' size='large' />
+                            {item.muted? 
+                            <IconMute className='text-gray-400 cursor-pointer hover:scale-125' size='large' />: 
+                            <IconVolume2 className='text-blue-400 cursor-pointer hover:scale-125' size='large' />
+                            }
+                            <IconCopyAdd className='text-blue-400 cursor-pointer hover:scale-125' size='large' />
                         </div>
                     </div>
                 ))

@@ -1,5 +1,6 @@
 import My from "./my/My";
 import Friends from "./friends/Friend";
+import Inbox from "./inbox/Inbox";
 
 export default function Profile(params) {
     return(
@@ -7,8 +8,11 @@ export default function Profile(params) {
             <div className="bg-white rounded-xl shadow-xl w-full px-16 mb-8">
                 <My />
             </div>
-            <div className="bg-white rounded-lg shadow-xl w-full px-16">
+            <div className="bg-white rounded-lg shadow-xl w-full px-16 mb-8">
                 <Friends />
+            </div>
+            <div className="bg-white rounded-lg shadow-xl w-full px-16">
+                <Inbox />
             </div>
         </div>
     )

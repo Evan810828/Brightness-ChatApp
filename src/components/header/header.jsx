@@ -41,7 +41,7 @@ export default function Header() {
                 ))}
             </div>
             <div className='fixed bottom-4'>
-                <IconKey size='extra-large' className='cursor-pointer' onClick={()=>{window.location.href="/login"}} />
+                <IconKey size='extra-large' className='cursor-pointer hover:scale-[1.1]' onClick={()=>{window.location.href="/login"}} />
             </div>
         </div>
     )

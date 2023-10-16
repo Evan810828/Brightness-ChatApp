@@ -11,22 +11,21 @@ export default function My() {
                     <div className="text-3xl font-semibold mb-4">Akutar Banana</div>
                     <div>
                         <div>
-                            <span>Email: ba254@rice.edu</span>
+                            <span>Age: 24</span>
                         </div>
                         <div>
-                            <span>Address: Rice University</span>
+                            <span>School: Rice University</span>
                         </div>
                         <div>
-                            <span>Phone: 123456789</span>
+                            <span>Interests: Attending Prof. Mack's Lectures</span>
                         </div>
                         <div className="mt-6">
                             <span className="text-slate-500">
-                                My name is Riley See. I'm a recent elementary education graduate from Ball State University. 
-                                I've been working at a camp for elementary children this summer, 
-                                and I'm excited to find my first teaching position for the coming school year. 
-                                I have several original lesson plans I created during my teaching internship that I look forward to implementing in my own classroom. 
-                                I attended Brookwood Elementary myself and believe I would be a great fit for your second-grade opening. 
-                                It would be a joy for me to teach students in the same place that sparked my love of learning.
+                            I'm a passionate learner who thrives in the heart of academic discussions. 
+                            Being a regular attendee at Prof. Mack's lectures, I find myself constantly enlightened by the intricacies of our world. 
+                            Outside of academia, I am an avid rock music enthusiast, with a penchant for exploring both classic and contemporary tracks. 
+                            I believe in the power of continued learning and strive to bring a sense of curiosity and exploration to everything I do. 
+                            Connect with me to dive into intellectual conversations or to simply jam to some classic rock tunes.
                             </span>
                         </div>
                     </div>
