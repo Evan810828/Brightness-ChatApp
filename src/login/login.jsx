@@ -16,7 +16,7 @@ export default function Login() {
             <h1 className='text-4xl mb-[6vh]'>
                 Welcome to Brightness!
             </h1>
-            <div className="px-8 pt-6 pb-8 bg-white shadow-lg rounded-lg flex flex-col items-center">
+            <div className="px-8 pt-6 pb-6 bg-white shadow-lg rounded-lg flex flex-col items-center">
                 <h2 className="text-2xl mb-8 font-semibold self-center">Login in to your account</h2>
                 <div className='flex items-center mb-4 w-full'>
                     <span className='mr-2 w-[80px]'>Username: </span>
@@ -26,7 +26,7 @@ export default function Login() {
                     <span className='mr-2 w-[80px]'>Password: </span>
                     <Input className='!w-[200px]' value={password}></Input>
                 </div>
-                <div className='w-full flex justify-end'>
+                <div className='w-full flex justify-end mt-1'>
                     <a className='text-blue-500 hover:underline cursor-pointer'>Forgot password?</a>
                 </div>
                 <div className='mt-6'>

@@ -1,4 +1,4 @@
-import { List, Avatar, Button, ButtonGroup, SideSheet,TextArea } from '@douyinfe/semi-ui';
+import { Avatar, Image, TextArea } from '@douyinfe/semi-ui';
 import React, { useState } from 'react';
 
 export default function ChatRoom(params) {
@@ -87,70 +87,52 @@ export default function ChatRoom(params) {
     const change = () => {
         setVisible(!visible);
     };
-    const getContainer = () => {
-        console.log(document.querySelector('#sidesheet-container'))
-        return document.querySelector('#sidesheet-container');
-    };
-    return (
-        <div  className="flex flex-row w-[72%] h-[100%] pl-3">
-            <div className="w-[70%] h-[100%] pl-3">
-                <div className='flex flex-row '>
-                    <div className='w-[50%] text-white text-2xl font-semibold ml-5 mt-3 '>
-                        Chatroom Name here
-                    </div>
-                    <div className="w-[50%] w-[50%] text-white text-2xl font-semibold ml-5 mt-3 text-right" onClick={change}>...</div>
-                </div>
 
-                <div className='flex flex-col w-full bg-white rounded-xl shadow-xl w-full my-2 mx-3 py-2 px-2 h-[90.5%]'>
-                     <div id='message-display-area' className='flex flex-col overflow-y-auto max-h-[79%] border border-gray-400 '>
-                        {data.map((item) => {
-                            if(!item.yours){
-                                return(
-                                    <div className=' rounded-lg px-3 py-2 flex justify-between cursor-pointer mb-2' >
+    return (
+        <div  className="flex flex-row w-full h-[100%] pl-3">
+            <div className="w-full h-[100%] pl-3">
+                <div className='flex flex-col w-full bg-white w-full'>
+                    <div className='flex items-center h-[9vh] border justify-between'>
+                        <div className='w-max text-xl mx-5 flex items-center'>
+                            <Image className="w-[40px] h-[40px] !rounded-[25px] mr-4 border-[1px]" src={require('../../chatBackground.jpg')} />
+                            <div>Chatroom Name here</div>
+                        </div>
+                        <div className="h-full text-2xl mx-5 mt-3 cursor-pointer hover:text-slate-500 hover:scale-[1.1]" onClick={change}>...</div>
+                    </div>
+                    <div className='flex flex-col h-screen bg-chat'>
+                        <div className='h-[83vh] overflow-y-auto py-2 bg-[#F1F1F1]'>
+                            {data.map((item) => (
+                                !item.yours ?
+                                (
+                                    <div className='px-12 py-4 flex w-full items-start' >
                                         <div className='flex'>
                                             <Avatar src={item.avatar} onClick={()=>console.log("Clicked")}  />
-                                            <div className='flex flex-col ml-2'>
-                                                <span>{item.id}</span>
-                                                <span className='text-sm font-light text-slate-500'>{item.message}</span>
+                                            <div className='ml-2'>
+                                                <div className='ml-1 text-sm mb-1'>{item.id}</div>
+                                                <div className='bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light'>{item.message}</div>
                                             </div>
                                         </div>
                                     </div>
-                                )
-                            }
-                            else{
-                                return(
-                                    <div className=' rounded-lg px-3 py-2 flex justify-end cursor-pointer mb-2'  >
+                                ) :
+                                (
+                                    <div className='px-12 py-4 flex w-full justify-end' >
                                         <div className='flex'>
-                                            <div className='flex flex-col ml-2'>
-                                                <span className='text-right'>{item.id}</span>
-                                                <span className='text-sm font-light text-slate-500'>{item.message}</span>
+                                            <div className='mr-2'>
+                                                <div className='ml-1 text-sm mb-1'>{item.id}</div>
+                                                <div className='bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light'>{item.message}</div>
                                             </div>
-                                            <Avatar src={item.avatar} onClick={()=>console.log("Clicked")} />
+                                            <Avatar src={item.avatar} onClick={()=>console.log("Clicked")}  />
                                         </div>
                                     </div>
                                 )
-                            }
+                            ))}
+                        </div>
+                        <div className='fixed w-full rounded-sm border h-[8vh] bottom-0'>
                             
-                            })}
-
-                     </div>
-                     <div className='h-[1%]'>
-
-                     </div>
-                     <div className='border border-gray-400 h-[20%]'>
-                     <TextArea maxCount={100} showClear  className='h-[100%]'/>
-
-                    </div>   
+                        </div>
+                    </div>
                 </div>
-
-                
-            </div>
-            <div id="sidesheet-container" className="relative top-[5%]  left-[2%] w-[30%] max-h-[90%] bg-[#006DF0]">
-                <SideSheet title="滑动侧边栏"   width={380} visible={visible} onCancel={change} getPopupContainer={ getContainer} placement='left'>
-
-                </SideSheet>
             </div>
         </div>
-
     )
 }

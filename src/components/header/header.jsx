@@ -27,12 +27,12 @@ export default function Header() {
     return (
         // header component
         <div className="fixed w-[60px] h-screen bg-[#F1F1F1] flex flex-col items-center">
-            <Image className='pb-8 pt-2' src={require('../../logo.png')} />
+            <Image className='pb-8 pt-2 w-12' src={require('../../logo.png')} />
             <div className='h-[180px] flex flex-col justify-between'>
                 {indexItem.map((item, i) => (
                     <div 
                         key={item.id} 
-                        className={`w-[60px] h-[60px] flex justify-center items-center ${window.location.pathname === item.url ? 'bg-[#006DF0]' : ''}`} 
+                        className={`rounded-sm w-[60px] h-[60px] cursor-pointer flex justify-center items-center ${window.location.pathname === item.url ? 'bg-[#006DF0]' : 'hover:bg-[#006DF032]'}`} 
                         onClick={() => {
                             window.location.href = item.url;
                         }}>

@@ -71,8 +71,8 @@ export default function ChatList(params) {
     ];
 
     return(
-        <div className="w-[28%]">
-            <div className='text-white text-2xl font-semibold ml-5 mt-3'>Chats</div>
+        <div className="w-[32%]">
+            <div className=' text-2xl font-semibold ml-5 mt-3'>Chats</div>
             <div className='w-full bg-white rounded-xl shadow-xl w-full my-2 mx-3 py-2 px-2'>
                 <div className='h-[89vh] overflow-scroll'>
                     {data.map((item) => (
