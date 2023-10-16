@@ -118,7 +118,7 @@ export default function ChatRoom(params) {
                                     <div className='px-12 py-4 flex w-full justify-end' >
                                         <div className='flex'>
                                             <div className='mr-2'>
-                                                <div className='ml-1 text-sm mb-1'>{item.id}</div>
+                                                <div className='ml-1 text-sm mb-1 text-right'>{item.id}</div>
                                                 <div className='bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light'>{item.message}</div>
                                             </div>
                                             <Avatar src={item.avatar} onClick={()=>console.log("Clicked")}  />
