@@ -122,7 +122,7 @@ export default function ChatRoom(params) {
                                     <div className='hover:bg-slate-200 rounded-lg px-3 py-2 flex justify-end cursor-pointer mb-2' onClick={()=>console.log("Clicked")} >
                                         <div className='flex'>
                                             <div className='flex flex-col ml-2'>
-                                                <span>{item.id}</span>
+                                                <span className='text-right'>{item.id}</span>
                                                 <span className='text-sm font-light text-slate-500'>{item.message}</span>
                                             </div>
                                             <Avatar src={item.avatar} />
