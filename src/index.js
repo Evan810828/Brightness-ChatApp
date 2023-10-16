@@ -7,6 +7,7 @@ import App from './App';
 import ChatIndex from './chat/ChatIndex';
 import Profile from './profile/Profile';
 import Login from './login/login';
+import Social from './social/Social';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,6 +17,7 @@ root.render(
         <Route path="/" element={<App />}>
           <Route path='' element={<ChatIndex />} />
           <Route path='profile' element={<Profile />} />
+          <Route path='social' element={<Social />} />
         </Route>
         <Route path='/login' element={<Login />} />
       </Routes>
