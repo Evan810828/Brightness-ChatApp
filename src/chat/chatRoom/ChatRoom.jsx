@@ -100,7 +100,7 @@ export default function ChatRoom(params) {
                         <div className="h-full text-2xl mx-5 mt-3 cursor-pointer hover:text-slate-500 hover:scale-[1.1]" onClick={change}>...</div>
                     </div>
                     <div className='flex flex-col h-screen bg-chat'>
-                        <div className='h-[84vh] overflow-y-auto flex flex-col-reverse py-2 bg-[#F1F1F1]'>
+                        <div className='h-[84vh] overflow-y-auto py-2 bg-[#F1F1F1]'>
                             {data.map((item) => (
                                 !item.yours ?
                                 (
