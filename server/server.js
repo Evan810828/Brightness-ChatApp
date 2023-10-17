@@ -1,14 +1,23 @@
-const path = require('path');
-const express = require('express');
-const app = express();
-const port = process.env.PORT || 3000;
-app.use(express.static(path.join(__dirname, '..', 'build')));
+const express = require("express");
+
+const port = process.env.PORT || 8080;
+var app = express();
+
+// List of all the files that should be served as-is
+
 app.get("*", (req, res) => {
-    let url = path.join(__dirname, '../client/build', 'index.html');
-    if (!url.startsWith('/app/')) // since we're on local windows
-      url = url.substring(1);
-    res.sendFile(url);
-  });
+
+  let path = req.params['0'].substring(1)
+
+  if (protected.includes(path)) {
+    // Return the actual file
+    res.sendFile(`${__dirname}/build/${path}`);
+  } else {
+    // Otherwise, redirect to /build/index.html
+    res.sendFile(`${__dirname}/build/index.html`);
+  }
+});
+
 app.listen(port, () => {
-    console.log('Server is running on port: ' + port);
+  console.log(`Server is up on port ${port}`);
 });
