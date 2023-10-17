@@ -2,6 +2,7 @@
   "name": "chat",
   "version": "0.1.0",
   "private": false,
+  "homepage": "https://chatapp-api-team-b-9056a50c3301.herokuapp.com/",
   "engines": {
     "node": "16.17.1",
     "npm": "8.15.0"
