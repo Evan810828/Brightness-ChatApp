@@ -1,7 +1,7 @@
 {
   "name": "chat",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "homepage": "https://evan810828.github.io/COMP504-ChatApp",
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
