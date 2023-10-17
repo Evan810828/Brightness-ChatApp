@@ -9,6 +9,16 @@ app.get("*", (req, res) => {
       url = url.substring(1);
     res.sendFile(url);
   });
+
+  app.get('/login', (req, res) => {
+	res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
+app.get('/profile', (req, res) => {
+	res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
+app.get('/social', (req, res) => {
+	res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 app.listen(port, () => {
     console.log('Server is running on port: ' + port);
 });
