@@ -66,7 +66,7 @@ export default function Social() {
             <div className="text-3xl font-bold">Find Others</div>
             <div className="grid grid-cols-4 gap-8 mt-8 w-full">
                 {data.map((item, i) => (
-                    <div className="bg-white rounded-xl shadow-xl w-[250px] h-[240px] hover:scale-[1.1]">
+                    <div key={i} className="bg-white rounded-xl shadow-xl w-[250px] h-[240px] hover:scale-[1.1]">
                         <Image className="w-full h-[70%]" src={require('../chatBackground.jpg')} />
                         <div className="px-4 py-1 flex w-full justify-between">
                             <div>

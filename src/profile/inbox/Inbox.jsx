@@ -58,7 +58,7 @@ export default function Inbox() {
             <div className="pb-3 text-2xl font-bold">Nofitications</div>
             <div className="divide-y">
                 {messages.map((item, i) => (
-                    <div className="my-2 py-2 flex justify-between w-full">
+                    <div key={i} className="my-2 py-2 flex justify-between w-full">
                         <div>
                             <div className="flex items-center">
                                 <Avatar size="small" src={item.avatar} shape="circle" />

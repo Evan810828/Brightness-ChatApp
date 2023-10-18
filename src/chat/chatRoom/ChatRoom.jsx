@@ -1,6 +1,7 @@
 import { Avatar, Image, Input, TextArea } from '@douyinfe/semi-ui';
 import { IconEmoji } from '@douyinfe/semi-icons';
 import React, { useState } from 'react';
+import Admin from './admin';
 
 export default function ChatRoom(params) {
     const data = [
@@ -83,7 +84,7 @@ export default function ChatRoom(params) {
         }
     ];
 
-    const [visible, setVisible] = useState(false);
+    const [visible, setVisible] = useState(true);
     const change = () => {
         setVisible(!visible);
     };
@@ -97,14 +98,15 @@ export default function ChatRoom(params) {
                             <Image className="w-[40px] h-[40px] !rounded-[25px] mr-4 border-[1px]" src={require('../../chatBackground.jpg')} />
                             <div>COMP504 Family</div>
                         </div>
-                        <div className="h-full text-2xl mx-5 mt-3 cursor-pointer hover:text-slate-500 hover:scale-[1.1]" onClick={change}>...</div>
+                        <div className="h-full text-2xl mx-5 mt-3 cursor-pointer hover:text-slate-500 hover:scale-[1.2]" onClick={change}>...</div>
+                        {visible ? null : <Admin />}
                     </div>
                     <div className='flex flex-col h-screen bg-chat'>
                         <div className='h-[84vh] overflow-y-auto py-2 bg-[#F1F1F1]'>
                             {data.map((item) => (
                                 !item.yours ?
                                 (
-                                    <div className='px-12 py-4 flex w-full items-start' >
+                                    <div key={item.id} className='px-12 py-4 flex w-full items-start' >
                                         <div className='flex'>
                                             <Avatar src={item.avatar} onClick={()=>console.log("Clicked")}  />
                                             <div className='ml-2'>
@@ -115,7 +117,7 @@ export default function ChatRoom(params) {
                                     </div>
                                 ) :
                                 (
-                                    <div className='px-12 py-4 flex w-full justify-end' >
+                                    <div key={item.id} className='px-12 py-4 flex w-full justify-end' >
                                         <div className='flex'>
                                             <div className='mr-2'>
                                                 <div className='ml-1 text-sm mb-1 text-right'>{item.id}</div>
