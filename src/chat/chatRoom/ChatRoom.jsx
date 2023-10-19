@@ -166,7 +166,7 @@ export default function ChatRoom(params) {
                                 (
                                     <div key={i} className='px-12 py-4 flex w-full items-start' onMouseOver={()=>{changeContextShow(i, "block")}} onMouseOut={()=>{changeContextShow(i, "none")}}>
                                         <div className='flex'>
-                                            <Avatar src={item.avatar} onClick={()=>console.log("Clicked")}  />
+                                            <Avatar src={item.avatar} onClick={()=>window.location.href=`/profile/${item.id}`}  />
                                             <div className='ml-2'>
                                                 <div className='ml-1 text-sm mb-1'>{item.id}</div>
                                                 <div className='bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light'>{item.message}</div>

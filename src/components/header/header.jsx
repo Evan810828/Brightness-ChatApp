@@ -12,7 +12,7 @@ const indexItem = [
         id: 2,
         icon: <IconUser size='extra-large' className='cursor-pointer' />,
         iconSelected: <IconUser size='extra-large' className='cursor-pointer text-white' />,
-        url: '/profile'
+        url: '/profile/Akutar Banana'
     },
     {
         id: 3,
@@ -32,11 +32,11 @@ export default function Header() {
                 {indexItem.map((item, i) => (
                     <div 
                         key={item.id} 
-                        className={`rounded-sm w-[60px] h-[60px] cursor-pointer flex justify-center items-center ${window.location.pathname === item.url ? 'bg-[#006DF0]' : 'hover:bg-[#006DF032]'}`} 
+                        className={`rounded-sm w-[60px] h-[60px] cursor-pointer flex justify-center items-center ${window.location.pathname.split("/")[1] === item.url.split("/")[1] ? 'bg-[#006DF0]' : 'hover:bg-[#006DF032]'}`} 
                         onClick={() => {
                             window.location.href = item.url;
                         }}>
-                        {window.location.pathname === item.url ? item.iconSelected:item.icon}
+                        {window.location.pathname.split("/")[1] === item.url.split("/")[1] ? item.iconSelected:item.icon}
                     </div>
                 ))}
             </div>
