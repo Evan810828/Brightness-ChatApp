@@ -158,6 +158,9 @@ export default function ChatRoom(params) {
                     </div>
                     <div className='flex flex-col h-screen bg-chat'>
                         <div className='h-[84vh] overflow-y-auto py-2 bg-[#F1F1F1]'>
+                            <div className='flex w-full justify-center mt-2'>
+                                <div className='bg-slate-300 text-white w-max px-2 rounded-lg text-sm'>11:20</div>
+                            </div>
                             {data.map((item, i) => {
                                 return !item.yours ?
                                 (
