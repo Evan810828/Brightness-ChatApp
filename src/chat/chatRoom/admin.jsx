@@ -1,4 +1,4 @@
-import { Image, Tabs, TabPane, Input } from '@douyinfe/semi-ui';
+import { Image, Tabs, TabPane, Input, Switch } from '@douyinfe/semi-ui';
 import { IconEdit, IconCopyAdd, IconVolume2 } from '@douyinfe/semi-icons';
 import { useState } from 'react';
 
@@ -49,6 +49,7 @@ const membersList = [
 
 export default function Admin(params) {
     const [activeKey, setActiveKey] = useState('1');
+    const [roomType, setRoomType] = useState('Public');
 
     return(
         <div className="py-4 px-1 md:w-[600px] md:h-[500px] fixed bg-white right-8 top-8 z-[100] rounded-xl shadow-xl">
@@ -63,6 +64,16 @@ export default function Admin(params) {
                         <div className='text-slate-500 flex flex-col w-[70%] justify-start mt-4'>
                             <div className=''>Members: 14</div>
                             <div className='text-sm mt-2'>Created at 01 Jan 2023 GMT</div>
+                        </div>
+                        <div className='mt-4 flex'>
+                            <Switch checkedChildren="Public" unCheckedChildren="Private" defaultChecked onChange={(e)=>{
+                                if (e) {
+                                    setRoomType('Public');
+                                } else {
+                                    setRoomType('Private');
+                                }
+                            }} />
+                            <div className='font-semibold ml-3'>{roomType}</div>
                         </div>
                         <div>
                             <div className='mt-6 flex items-center'>

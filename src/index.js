@@ -8,6 +8,7 @@ import ChatIndex from './chat/ChatIndex';
 import Profile from './profile/Profile';
 import Login from './login/login';
 import Social from './social/Social';
+import Signup from './signup/Signup';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -20,6 +21,7 @@ root.render(
           <Route path='social' element={<Social />} />
         </Route>
         <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<Signup />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

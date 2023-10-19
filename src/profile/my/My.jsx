@@ -1,4 +1,5 @@
-import { Avatar } from "@douyinfe/semi-ui";
+import { Avatar, Icon } from "@douyinfe/semi-ui";
+import { IconEdit } from "@douyinfe/semi-icons";
 
 export default function My() {
     return(
@@ -8,15 +9,18 @@ export default function My() {
                     <Avatar className="!w-[150px] !h-[150px]" src="https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp" />
                 </div>
                 <div className="w-max">
-                    <div className="text-3xl font-semibold mb-4">Akutar Banana</div>
+                    <div className="flex w-full justify-between items-center">
+                        <div className="text-3xl font-semibold mb-4">Akutar Banana</div>
+                        <IconEdit className="ml-2 text-slate-500 cursor-pointer" />
+                    </div>
                     <div>
-                        <div>
+                        <div className="flex items-center">
                             <span>Age: 24</span>
                         </div>
-                        <div>
+                        <div className="flex items-center">
                             <span>School: Rice University</span>
                         </div>
-                        <div>
+                        <div className="flex items-center">
                             <span>Interests: Attending Prof. Mack's Lectures</span>
                         </div>
                         <div className="mt-6">
