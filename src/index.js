@@ -15,18 +15,19 @@ import en_US from '@douyinfe/semi-ui/lib/es/locale/source/en_US';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <LocaleProvider locale={en_US}>
+    {/* <LocaleProvider locale={en_US}> */}
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/chat" element={<ChatIndex />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/social" element={<Social />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/" element={<App />}>
+            <Route path='' element={<ChatIndex />} />
+            <Route path='profile/:uid' element={<Profile />} />
+            <Route path='social' element={<Social />} />
+          </Route>
+          <Route path='/login' element={<Login />} />
+          <Route path='/signup' element={<Signup />} />
         </Routes>
       </BrowserRouter>
-    </LocaleProvider>
+    {/* </LocaleProvider> */}
   </React.StrictMode>
 );
 
