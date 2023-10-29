@@ -1,4 +1,5 @@
 import { Avatar } from "@douyinfe/semi-ui";
+import { useState } from "react";
 
 const messages = [
     {
@@ -39,6 +40,13 @@ const messages = [
 ]
 
 export default function Inbox() {
+    const [invitations, setInvitations] = useState([]);
+
+    const getMessages = () => {
+        
+    }
+
+
     const getOperation = (message) => {
         switch(message.type) {
             case "invitation":

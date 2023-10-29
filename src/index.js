@@ -9,22 +9,24 @@ import Profile from './profile/Profile';
 import Login from './login/login';
 import Social from './social/Social';
 import Signup from './signup/Signup';
-import Other from './profile/other/Other';
+import { LocaleProvider } from '@douyinfe/semi-ui';
+import en_US from '@douyinfe/semi-ui/lib/es/locale/source/en_US';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />}>
-          <Route path='' element={<ChatIndex />} />
-          <Route path='profile/:uid' element={<Profile />} />
-          <Route path='social' element={<Social />} />
-        </Route>
-        <Route path='/login' element={<Login />} />
-        <Route path='/signup' element={<Signup />} />
-      </Routes>
-    </BrowserRouter>
+    <LocaleProvider locale={en_US}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/chat" element={<ChatIndex />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/social" element={<Social />} />
+          <Route path="/signup" element={<Signup />} />
+        </Routes>
+      </BrowserRouter>
+    </LocaleProvider>
   </React.StrictMode>
 );
 

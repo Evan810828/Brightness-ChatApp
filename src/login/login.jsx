@@ -1,13 +1,37 @@
-import { Button, Image, Input } from '@douyinfe/semi-ui';
+import { Button, Image, Input, Toast } from '@douyinfe/semi-ui';
 import { useState } from 'react';
+import { docCookies } from '../components/header/cookie';
 
 export default function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Handle your login logic here
+    const handleSubmit = () => {
+        if (username === '' || password === '') {
+            Toast.error("Username or password cannot be empty!");
+            return;
+        }
+        fetch("/login", {
+            method: 'POST',
+            body: JSON.stringify({
+                "username": username,
+                "pwd": password
+            }),
+        }).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            if (data) {
+                if(data.result === "failed: user does not exist") {
+                    Toast.error("Failed to login, check your username and password!");
+                    return;
+                }
+                // store the username as the cookie
+                docCookies.setItem("username", username, 1000, "/")
+                window.location.href = "/";
+            }
+        });
     };
 
     return (
@@ -24,15 +48,14 @@ export default function Login() {
                     <h2 className="text-2xl mb-8 font-semibold self-center">Login in to your account</h2>
                     <div className='flex items-center mb-4 w-full'>
                         <span className='mr-2 w-[80px]'>Username: </span>
-                        <Input className='!w-[200px]' value={username}></Input>
+                        <Input className='!w-[200px]' value={username} onChange={(value, e)=>{setUsername(value)}}></Input>
                     </div>
                     <div className='flex items-center mb-4'>
                         <span className='mr-2 w-[80px]'>Password: </span>
-                        <Input className='!w-[200px]' value={password}></Input>
+                        <Input className='!w-[200px]' value={password} onChange={(value, e)=>{setPassword(value)}}></Input>
                     </div>
                     <div className='w-full flex justify-between mt-1'>
                         <a className='text-blue-500 hover:underline cursor-pointer' onClick={()=>{window.location.href = "/signup"}}>Sign up</a>
-                        <a className='text-blue-500 hover:underline cursor-pointer'>Forgot password?</a>
                     </div>
                     <div className='mt-6'>
                         <Button type='primary' theme='solid' size='large' className='!text-base !bg-[#006DF0]' onClick={handleSubmit}>

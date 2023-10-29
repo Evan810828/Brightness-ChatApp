@@ -1,5 +1,6 @@
 import { IconUser, IconHome, IconKey, IconUserGroup } from '@douyinfe/semi-icons';
 import { Image } from '@douyinfe/semi-ui';
+import { docCookies } from './cookie';
 
 const indexItem = [
     {
@@ -12,7 +13,7 @@ const indexItem = [
         id: 2,
         icon: <IconUser size='extra-large' className='cursor-pointer' />,
         iconSelected: <IconUser size='extra-large' className='cursor-pointer text-white' />,
-        url: '/profile/Akutar Banana'
+        url: '/profile/' + docCookies.getItem("username")  // profile plus the username from cookie
     },
     {
         id: 3,

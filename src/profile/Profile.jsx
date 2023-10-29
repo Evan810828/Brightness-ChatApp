@@ -4,6 +4,7 @@ import Inbox from "./inbox/Inbox";
 import Other from "./other/Other";
 import { useEffect, useState } from "react";
 import { IconUserAdd } from "@douyinfe/semi-icons";
+import { docCookies } from "../components/header/cookie";
 
 export default function Profile(params) {
     const [username, setUsername] = useState('');
@@ -15,12 +16,12 @@ export default function Profile(params) {
     return(
         <div className='w-full min-h-screen h-max px-36 py-20 flex flex-col items-center'>
             <div className="bg-white rounded-xl shadow-xl w-full px-16 mb-8">
-                {username === 'Akutar%20Banana' ? 
+                {username ===  docCookies.getItem("username") ? 
                     <My /> : 
                     <Other />
                 }
             </div>
-            {username === 'Akutar%20Banana' ?
+            {username ===  docCookies.getItem("username")?
                 <div className="w-full">
                     <div className="bg-white rounded-lg shadow-xl w-full px-16 mb-8">
                         <Friends />

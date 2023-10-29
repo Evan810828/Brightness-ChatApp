@@ -1,6 +1,7 @@
 {
   "name": "chat",
   "version": "0.1.0",
+  "proxy": "https://dg76-comp504-chat-api-0a154efee1fc.herokuapp.com/",
   "private": false,
   "homepage": "https://chatapp-api-team-b-9056a50c3301.herokuapp.com/",
   "engines": {
