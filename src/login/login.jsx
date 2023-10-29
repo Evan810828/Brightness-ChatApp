@@ -28,7 +28,7 @@ export default function Login() {
                     return;
                 }
                 // store the username as the cookie
-                docCookies.setItem("username", username, 1000, "/")
+                docCookies.setItem("username", username, 999999999999, "/")
                 window.location.href = "/";
             }
         });

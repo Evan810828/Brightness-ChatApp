@@ -1,27 +1,93 @@
-import { Avatar, Icon } from "@douyinfe/semi-ui";
+import { Avatar, Icon, Toast } from "@douyinfe/semi-ui";
 import { IconEdit } from "@douyinfe/semi-icons";
+import { useEffect, useState } from "react";
+import { docCookies } from "../../components/header/cookie";
+import { IconUserAdd } from "@douyinfe/semi-icons";
 
-export default function Other() {
+export default function Other(params) {
+    const [data, setData] = useState(null);
+
+    const username = params.username;
+
+    const getUserInfo = () => {
+        fetch(`/user/${username}`, {method:"GET"}).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            if (data) {
+                setData(data);
+            }
+        });
+    }
+
+    const addFriend = () => {
+        fetch(`/user/friends/invite`, {method:"POST",
+            body: JSON.stringify({
+                username: username,
+                senderUsername: docCookies.getItem("username")
+              })
+        }).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            if (data) {
+                if(data.result === "success"){
+                    Toast.success("Friend request sent!");
+                }
+            }
+        });
+    }
+
+    const [friendList, setFriendList] = useState([]);
+
+    const getFriendList = () => {
+        fetch(`/user/friends/${docCookies.getItem("username")}`, {method:"GET"}).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            if (data) {
+                setFriendList(data.usernames);
+                console.log(friendList);
+            }
+        });
+    }
+
+    useEffect(() => {
+        console.log(username)
+        getFriendList();
+        getUserInfo();
+    }, [username]);
+
     return(
         <div className="py-8">
-            <div className="flex">
+            {data && <div className="flex">
                 <div className="!w-[150px] !h-[150px] !rounded-[75px] !shadow-lg mr-8">
-                    <Avatar className="!w-[150px] !h-[150px]" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTj_UkBWZBjd-K5TxEQuPAUd6Gj7BKFBsR49A&usqp=CAU" />
+                    <Avatar className="!w-[150px] !h-[150px]" src="https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp" />
                 </div>
                 <div className="w-max">
                     <div className="flex w-full justify-between items-center">
-                        <div className="text-3xl font-semibold mb-4">Mark</div>
-                        <IconEdit className="ml-2 text-slate-500 cursor-pointer" />
+                        <div className="text-3xl font-semibold mb-4">{username}</div>
                     </div>
                     <div>
                         <div className="flex items-center">
-                            <span>Age: 24</span>
+                            <span>Age: {data.age}</span>
                         </div>
                         <div className="flex items-center">
-                            <span>School: Rice University</span>
+                            <span>School: {data.school}</span>
                         </div>
                         <div className="flex items-center">
-                            <span>Interests: Attending Prof. Mack's Lectures</span>
+                            <span>Interests: {data.interests.map(
+                                item=>{
+                                    // replace the " with nothing and add comma if it is not the last item
+                                    if (data.interests.indexOf(item) !== data.interests.length - 1) {
+                                        return item.replace(/"/g, '') + ", ";
+                                    }
+                                    return item.replace(/"/g, '')
+                                }
+                            )}</span>
                         </div>
                         <div className="mt-6">
                             <span className="text-slate-500">
@@ -34,7 +100,15 @@ export default function Other() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>}
+            {friendList.indexOf(username) === -1 ? 
+            <div className="w-full flex justify-center pt-6">
+                <div className="flex items-center cursor-pointer hover:bg-blue-500 rounded px-3 py-2 hover:!text-white hover:shadow-lg hover:scale-[1.1]" onClick={addFriend}>
+                    <IconUserAdd className="!text-2xl mr-3" type="plus-circle" />
+                    Add Friend
+                </div>
+            </div>:null
+            }
         </div>
     );
 }

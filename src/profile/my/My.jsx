@@ -1,7 +1,32 @@
-import { Avatar, Icon } from "@douyinfe/semi-ui";
+import { Avatar, Button, Icon } from "@douyinfe/semi-ui";
 import { IconEdit } from "@douyinfe/semi-icons";
+import { useEffect, useState } from "react";
 
-export default function My() {
+export default function My(params) {
+    const [school, setSchool] = useState('');
+    const [age, setAge] = useState('');
+    const [interests, setInterests] = useState([]);
+
+    const username = params.username;
+
+    const getUserInfo = () => {
+        fetch(`/user/${username}`, {method:"GET"}).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            if (data) {
+                setSchool(data.school);
+                setAge(data.age);
+                setInterests(data.interests);
+            }
+        });
+    }
+
+    useEffect(() => {
+        getUserInfo();
+    }, []);
+
     return(
         <div className="py-8">
             <div className="flex">
@@ -10,18 +35,26 @@ export default function My() {
                 </div>
                 <div className="w-max">
                     <div className="flex w-full justify-between items-center">
-                        <div className="text-3xl font-semibold mb-4">Akutar Banana</div>
+                        <div className="text-3xl font-semibold mb-4">{username}</div>
                         <IconEdit className="ml-2 text-slate-500 cursor-pointer" />
                     </div>
                     <div>
                         <div className="flex items-center">
-                            <span>Age: 24</span>
+                            <span>Age: {age}</span>
                         </div>
                         <div className="flex items-center">
-                            <span>School: Rice University</span>
+                            <span>School: {school}</span>
                         </div>
                         <div className="flex items-center">
-                            <span>Interests: Attending Prof. Mack's Lectures</span>
+                            <span>Interests: {interests.map(
+                                item=>{
+                                    // replace the " with nothing and add comma if it is not the last item
+                                    if (interests.indexOf(item) !== interests.length - 1) {
+                                        return item.replace(/"/g, '') + ", ";
+                                    }
+                                    return item.replace(/"/g, '')
+                                }
+                            )}</span>
                         </div>
                         <div className="mt-6">
                             <span className="text-slate-500">

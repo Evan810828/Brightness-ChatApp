@@ -19,8 +19,8 @@ export default function Signup() {
             Toast.error("Password and confirm password are not the same!");
             return;
         }
-        // split the interests by comma
-        const interestsList = interests.split(",");
+        // remove the whitespaces and split the interests
+        const interestsList = interests.replace(/\s/g, '').split(',');
         fetch("/register", {
             method: 'POST',
             body: JSON.stringify({

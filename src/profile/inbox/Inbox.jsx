@@ -1,5 +1,6 @@
 import { Avatar } from "@douyinfe/semi-ui";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { docCookies } from "../../components/header/cookie";
 
 const messages = [
     {
@@ -40,32 +41,41 @@ const messages = [
 ]
 
 export default function Inbox() {
-    const [invitations, setInvitations] = useState([]);
+    const [roomInvitations, setRoomInvitations] = useState([]);
+    const [userInvitations, setUserInvitations] = useState([]);
 
     const getMessages = () => {
-        
+        fetch(`/invitations/${docCookies.getItem("username")}`, {method:"GET"}).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            if (data) {
+                setRoomInvitations(data.rooms);
+                console.log(roomInvitations);
+                setUserInvitations(data.users);
+                console.log(userInvitations);
+            }
+        });
     }
+
+    useEffect(() => {
+        getMessages();
+    }, []);
 
 
     const getOperation = (message) => {
-        switch(message.type) {
-            case "invitation":
-                return <div className="flex h-full items-center w-36 justify-between">
-                    <button className="bg-blue-400 text-white px-2 py-1 rounded-sm text-sm mt-2">Accept</button>
-                    <button className="bg-red-400 text-white px-2 py-1 rounded-sm text-sm mt-2">Decline</button>
-                </div>
-            case "response":
-                return null
-            case "report":
-                return <button className="bg-green-500 text-white px-2 py-1 rounded-sm text-sm mt-2">Done</button>
-        }
+        return <div className="flex h-full items-center w-36 justify-between">
+            <button className="bg-blue-400 text-white px-2 py-1 rounded-sm text-sm mt-2">Accept</button>
+            <button className="bg-red-400 text-white px-2 py-1 rounded-sm text-sm mt-2">Decline</button>
+        </div>
     }
 
     return(
         <div className="py-6">
             <div className="pb-3 text-2xl font-bold">Nofitications</div>
             <div className="divide-y">
-                {messages.map((item, i) => (
+                {roomInvitations&& roomInvitations.map((item, i) => (
                     <div key={i} className="my-2 py-2 flex justify-between w-full">
                         <div>
                             <div className="flex items-center">
@@ -75,6 +85,23 @@ export default function Inbox() {
                             <div className="ml-10">
                                 <div className="text-sm text-gray-400">{item.time}</div>
                                 <div className="text-sm">{item.content}</div>
+                            </div>
+                        </div>
+                        <div>
+                            {getOperation(item)}
+                        </div>
+                    </div>
+                ))}
+                {userInvitations&& userInvitations.map((item, i) => (
+                    <div key={i} className="my-2 py-2 flex justify-between w-full">
+                        <div>
+                            <div className="flex items-center">
+                                <Avatar size="small" src={item.avatar} shape="circle" />
+                                <div className="ml-2">{item.username}</div>
+                            </div>
+                            <div className="ml-10">
+                                <div className="text-sm text-gray-400">{item.time}</div>
+                                <div className="text-sm">Request to add you as a friend.</div>
                             </div>
                         </div>
                         <div>

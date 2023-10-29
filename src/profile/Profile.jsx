@@ -3,11 +3,38 @@ import Friends from "./friends/Friend";
 import Inbox from "./inbox/Inbox";
 import Other from "./other/Other";
 import { useEffect, useState } from "react";
-import { IconUserAdd } from "@douyinfe/semi-icons";
+import { IconUserAdd, IconPlus } from "@douyinfe/semi-icons";
 import { docCookies } from "../components/header/cookie";
+import { Button, Input, Toast } from "@douyinfe/semi-ui";
 
 export default function Profile(params) {
     const [username, setUsername] = useState('');
+    const [roomName, setRoomName] = useState('');
+
+    const createChatroom = () => {
+        if (roomName === '') {
+            Toast.error("Room name cannot be empty!");
+            return;
+        }
+        fetch(`/chatroom/create`, {method:"POST",
+            body: JSON.stringify({
+                username: username,
+                roomName: roomName,
+                roomSize: 10,
+                roomType: "public"
+              })
+        }).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            if (data) {
+                if(data.result === "success"){
+                    Toast.success("Chatroom created!");
+                }
+            }
+        });
+    }
 
     useEffect(() => {
         setUsername(window.location.pathname.split('/')[2]);
@@ -17,26 +44,26 @@ export default function Profile(params) {
         <div className='w-full min-h-screen h-max px-36 py-20 flex flex-col items-center'>
             <div className="bg-white rounded-xl shadow-xl w-full px-16 mb-8">
                 {username ===  docCookies.getItem("username") ? 
-                    <My /> : 
-                    <Other />
+                    <My username={username} /> : 
+                    <Other username={username} />
                 }
             </div>
             {username ===  docCookies.getItem("username")?
                 <div className="w-full">
+                    <div className="flex justify-center w-full mb-6">
+                        <Input className="!max-w-[50%]" placeholder="Enter the room name" value={roomName} onChange={(value,e)=>{setRoomName(value)}} suffix={
+                            <Button className="" theme="solid" onClick={createChatroom}>
+                                Create a Chatroom
+                            </Button>
+                        } />
+                    </div>
                     <div className="bg-white rounded-lg shadow-xl w-full px-16 mb-8">
                         <Friends />
                     </div>
                     <div className="bg-white rounded-lg shadow-xl w-full px-16">
                         <Inbox />
                     </div>
-                </div>
-                : 
-                <div className="w-full flex justify-center">
-                    <div className="flex items-center cursor-pointer hover:bg-blue-500 rounded px-3 py-2 hover:!text-white hover:shadow-lg hover:scale-[1.1]">
-                        <IconUserAdd className="!text-2xl mr-3" type="plus-circle" />
-                        Add Friend
-                    </div>
-                </div>
+                </div> : null
             }
         </div>
     )
