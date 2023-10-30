@@ -1,11 +1,14 @@
-import { Avatar, Button, Icon } from "@douyinfe/semi-ui";
+import { Avatar, Button, Icon, Input, TextArea } from "@douyinfe/semi-ui";
 import { IconEdit } from "@douyinfe/semi-icons";
 import { useEffect, useState } from "react";
 
 export default function My(params) {
+    const [userData, setUserData] = useState(null);
+    const [edit, setEdit] = useState(false);
+    const [age, setAge] = useState(0);
     const [school, setSchool] = useState('');
-    const [age, setAge] = useState('');
-    const [interests, setInterests] = useState([]);
+    const [interests, setInterests] = useState("");
+    const [description, setDescription] = useState("");
 
     const username = params.username;
 
@@ -16,9 +19,26 @@ export default function My(params) {
             }
         }).then(data => {
             if (data) {
-                setSchool(data.school);
-                setAge(data.age);
-                setInterests(data.interests);
+                setUserData(data);
+            }
+        });
+    }
+
+    const updateUserInfo = () => {
+        fetch(`/user/setInfo`, {method:"POST",body: JSON.stringify({
+            userName: username,
+            newSchool: school,
+            newInterests: interests.replace(/\s/g, '').split(','),
+            newDescription: description
+          })
+        }).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            if (data) {
+                setUserData(data);
+                getUserInfo();
             }
         });
     }
@@ -29,27 +49,28 @@ export default function My(params) {
 
     return(
         <div className="py-8">
-            <div className="flex">
+            {userData && <div className="flex">
                 <div className="!w-[150px] !h-[150px] !rounded-[75px] !shadow-lg mr-8">
                     <Avatar className="!w-[150px] !h-[150px]" src="https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp" />
                 </div>
                 <div className="w-max">
                     <div className="flex w-full justify-between items-center">
                         <div className="text-3xl font-semibold mb-4">{username}</div>
-                        <IconEdit className="ml-2 text-slate-500 cursor-pointer" />
+                        {!edit?<IconEdit className="ml-2 text-slate-500 cursor-pointer" onClick={()=>{setEdit(true)}} />:
+                        <Button className="ml-2" theme="solid" onClick={()=>{setEdit(false);updateUserInfo()}}>Save</Button>}
                     </div>
                     <div>
                         <div className="flex items-center">
-                            <span>Age: {age}</span>
+                            <span>Age: {userData.age}</span>
                         </div>
                         <div className="flex items-center">
-                            <span>School: {school}</span>
+                            <span className="flex items-center">School: {edit?<Input className="ml-2" defaultValue={userData.school} value={school} onChange={(value, e)=>{setSchool(value)}} />:userData.school}</span>
                         </div>
                         <div className="flex items-center">
-                            <span>Interests: {interests.map(
+                            <span className="flex items-center">Interests: {edit?<Input className="ml-2" defaultValue={userData.interests} value={interests} onChange={(value, e)=>{setInterests(value)}} />:userData.interests.map(
                                 item=>{
                                     // replace the " with nothing and add comma if it is not the last item
-                                    if (interests.indexOf(item) !== interests.length - 1) {
+                                    if (userData.interests.indexOf(item) !== userData.interests.length - 1) {
                                         return item.replace(/"/g, '') + ", ";
                                     }
                                     return item.replace(/"/g, '')
@@ -58,16 +79,12 @@ export default function My(params) {
                         </div>
                         <div className="mt-6">
                             <span className="text-slate-500">
-                            I'm a passionate learner who thrives in the heart of academic discussions. 
-                            Being a regular attendee at Prof. Mack's lectures, I find myself constantly enlightened by the intricacies of our world. 
-                            Outside of academia, I am an avid rock music enthusiast, with a penchant for exploring both classic and contemporary tracks. 
-                            I believe in the power of continued learning and strive to bring a sense of curiosity and exploration to everything I do. 
-                            Connect with me to dive into intellectual conversations or to simply jam to some classic rock tunes.
+                            {edit?<TextArea value={description} onChange={(value, e)=>{setDescription(value)}} />:""}
                             </span>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>}
         </div>
     );
 }

@@ -1,4 +1,4 @@
-import { Image } from "@douyinfe/semi-ui";
+import { Image, Toast } from "@douyinfe/semi-ui";
 import {IconCopyAdd} from '@douyinfe/semi-icons';
 import { useEffect, useState } from "react";
 import { docCookies } from "../components/header/cookie";
@@ -37,6 +37,23 @@ export default function Social() {
         });
     }
 
+    const joinRoom = (roomName) => {
+        fetch(`/chatroom/join`, {method:"POST",
+            body: JSON.stringify({
+                roomName: roomName,
+                username: username
+              })
+        }).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            if (data) {
+                Toast.success("Joined!");
+            }
+        });
+    }
+
 
     useEffect(() => {
         getRoomlist();
@@ -58,7 +75,7 @@ export default function Social() {
                             </div>
                             <div>
                                 {joinedRoomlist.indexOf(item.roomName) === -1 ? 
-                                    <IconCopyAdd className="text-[#006DF0A1] !text-2xl cursor-pointer hover:scale-[1.1]" /> : 
+                                    <IconCopyAdd className="text-[#006DF0A1] !text-2xl cursor-pointer hover:scale-[1.1]" onClick={()=>{joinRoom(item.roomName)}} /> : 
                                     <div className="text-green-500">Joined</div>
                                 }
                             </div>

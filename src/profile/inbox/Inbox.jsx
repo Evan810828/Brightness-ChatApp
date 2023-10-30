@@ -52,9 +52,31 @@ export default function Inbox() {
         }).then(data => {
             if (data) {
                 setRoomInvitations(data.rooms);
-                console.log(roomInvitations);
                 setUserInvitations(data.users);
-                console.log(userInvitations);
+            }
+        });
+    }
+
+    const acceptRoomInvitation = (roomName) => {
+
+    }
+
+    const declineRoomInvitation = (roomName) => {
+
+    }
+
+    const acceptUserInvitation = (username) => {
+        fetch(`/user/friends/accept`, {method:"POST", body: JSON.stringify({
+            username: docCookies.getItem("username"),
+            senderUsername: username
+          })
+        }).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            if (data) {
+                window.location.reload();
             }
         });
     }
@@ -63,18 +85,10 @@ export default function Inbox() {
         getMessages();
     }, []);
 
-
-    const getOperation = (message) => {
-        return <div className="flex h-full items-center w-36 justify-between">
-            <button className="bg-blue-400 text-white px-2 py-1 rounded-sm text-sm mt-2">Accept</button>
-            <button className="bg-red-400 text-white px-2 py-1 rounded-sm text-sm mt-2">Decline</button>
-        </div>
-    }
-
     return(
         <div className="py-6">
             <div className="pb-3 text-2xl font-bold">Nofitications</div>
-            <div className="divide-y">
+            <div className="divide-y min-h-[200px]">
                 {roomInvitations&& roomInvitations.map((item, i) => (
                     <div key={i} className="my-2 py-2 flex justify-between w-full">
                         <div>
@@ -88,7 +102,10 @@ export default function Inbox() {
                             </div>
                         </div>
                         <div>
-                            {getOperation(item)}
+                            <div className="flex h-full items-center w-36 justify-between">
+                                <button className="bg-blue-400 text-white px-2 py-1 rounded-sm text-sm mt-2">Accept</button>
+                                <button className="bg-red-400 text-white px-2 py-1 rounded-sm text-sm mt-2">Decline</button>
+                            </div>
                         </div>
                     </div>
                 ))}
@@ -105,10 +122,16 @@ export default function Inbox() {
                             </div>
                         </div>
                         <div>
-                            {getOperation(item)}
+                            <div className="flex h-full items-center w-36 justify-between">
+                                <button className="bg-blue-400 text-white px-2 py-1 rounded-sm text-sm mt-2" onClick={()=>{acceptUserInvitation(item.username)}}>Accept</button>
+                                <button className="bg-red-400 text-white px-2 py-1 rounded-sm text-sm mt-2">Decline</button>
+                            </div>
                         </div>
                     </div>
                 ))}
+                {(roomInvitations.length === 0 && userInvitations.length === 0) && 
+                    <div className="text-center text-gray-400 text-xl relative top-[80px]">No notifications.</div>
+                }
             </div>
         </div>
     );

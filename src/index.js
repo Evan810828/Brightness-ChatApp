@@ -20,6 +20,7 @@ root.render(
         <Routes>
           <Route path="/" element={<App />}>
             <Route path='' element={<ChatIndex />} />
+            <Route path=':roomId' element={<ChatIndex />} />
             <Route path='profile/:uid' element={<Profile />} />
             <Route path='social' element={<Social />} />
           </Route>

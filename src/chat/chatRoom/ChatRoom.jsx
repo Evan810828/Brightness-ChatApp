@@ -1,6 +1,6 @@
 import { Avatar, Image, Input } from '@douyinfe/semi-ui';
 import { IconEmoji, IconLikeThumb, IconDislikeThumb, IconEdit } from '@douyinfe/semi-icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Admin from './admin';
 
 let data = [
@@ -112,6 +112,7 @@ export default function ChatRoom(params) {
     const [inputValue, setInputValue] = useState("");
     const [mode, setMode] = useState("message");
     const [editIndex, setEditIndex] = useState(-1);
+    const [roomDetails, setRoomDetails] = useState(undefined);
 
     const change = () => {
         setVisible(!visible);
@@ -144,17 +145,33 @@ export default function ChatRoom(params) {
         setTimer(timer+1);
     }
 
+    const getRoomDetails = () => {
+        fetch(`/chatroom/details/${window.location.pathname.split('/')[1]}`, {method:"GET"}).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            if (data) {
+                setRoomDetails(data);
+            }
+        });
+    }
+
+    useEffect(() => {
+        getRoomDetails();
+    }, []);
+
     return (
         <div  className="flex flex-row w-full h-[100%] pl-3">
-            <div className="w-full h-[100%] pl-3">
+            {roomDetails&& <div className="w-full h-[100%] pl-3">
                 <div className='flex flex-col w-full bg-white w-full'>
                     <div className='flex items-center h-[9vh] border justify-between'>
                         <div className='w-max text-xl mx-5 flex items-center'>
                             <Image className="w-[40px] h-[40px] !rounded-[25px] mr-4 border-[1px]" src={require('../../chatBackground.jpg')} />
-                            <div>COMP504 Family</div>
+                            <div>{roomDetails.roomName}</div>
                         </div>
                         <div className="h-full text-2xl mx-5 mt-3 cursor-pointer hover:text-slate-500 hover:scale-[1.2]" onClick={change}>...</div>
-                        {visible ? null : <Admin />}
+                        {visible ? null : <Admin roomDetails={roomDetails} />}
                     </div>
                     <div className='flex flex-col h-screen bg-chat'>
                         <div className='h-[84vh] overflow-y-auto py-2 bg-[#F1F1F1]'>
@@ -230,7 +247,7 @@ export default function ChatRoom(params) {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>}
         </div>
     )
 }

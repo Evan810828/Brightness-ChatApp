@@ -31,6 +31,7 @@ export default function Profile(params) {
             if (data) {
                 if(data.result === "success"){
                     Toast.success("Chatroom created!");
+                    setRoomName('');
                 }
             }
         });

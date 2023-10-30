@@ -1,6 +1,7 @@
 import { Image, Tabs, TabPane, Input, Switch } from '@douyinfe/semi-ui';
 import { IconEdit, IconCopyAdd, IconVolume2 } from '@douyinfe/semi-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { docCookies } from '../../components/header/cookie';
 
 const membersList = [
     {
@@ -50,35 +51,67 @@ const membersList = [
 export default function Admin(params) {
     const [activeKey, setActiveKey] = useState('1');
     const [roomType, setRoomType] = useState('Public');
+    const [roomDetails, setRoomDetails] = useState(undefined);
+    const [roomMembers, setRoomMembers] = useState([]);
+    const [adminStatus, setAdminStatus] = useState(undefined);
+
+    const getRoomMembers = () => {
+        fetch(`/chatroom/members/${params.roomDetails.roomName}`, {method:"GET"}).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            if (data) {
+                setRoomMembers(data.usernames)
+            }
+        });
+    }
+
+    const getAdminStatus = () => {
+        fetch(`/chatroom/admin/${params.roomDetails.roomName}`, {method:"GET"}).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            if (data) {
+                if(data.username === docCookies.getItem("username")){
+                    setAdminStatus(true);
+                    console.log(data.username);
+                } else {
+                    setAdminStatus(false);
+                    console.log(data);
+                }
+            }
+        });
+    }
+
+    useEffect(() => {
+        setRoomDetails(params.roomDetails);
+        getRoomMembers();
+        getAdminStatus();
+    }, [params]);
 
     return(
         <div className="py-4 px-1 md:w-[600px] md:h-[500px] fixed bg-white right-8 top-8 z-[100] rounded-xl shadow-xl">
-            <Tabs tabPosition='left' type='line' activeKey={activeKey} defaultActiveKey='1' onChange={(e)=>{setActiveKey(e)}}>
+            {roomDetails && roomMembers && <Tabs tabPosition='left' type='line' activeKey={activeKey} defaultActiveKey='1' onChange={(e)=>{setActiveKey(e)}}>
                 <TabPane tab="Overview" itemKey='1'>
                     <div className='w-full h-full flex flex-col py-3 px-4'>
                         <Image className="w-[80px] h-[80px] !rounded-[40px] mr-4" src={require('../../chatBackground.jpg')} />
                         <div className='flex items-center mt-4'>
-                            <div className='text-xl mr-4'>COMP504 Family</div>
-                            <IconEdit className='text-slate-400 cursor-pointer' />
+                            <div className='text-xl mr-4'>{roomDetails.roomName}</div>
+                            {adminStatus&&<IconEdit className='text-slate-400 cursor-pointer' />}
                         </div>
                         <div className='text-slate-500 flex flex-col w-[70%] justify-start mt-4'>
-                            <div className=''>Members: 14</div>
-                            <div className='text-sm mt-2'>Created at 01 Jan 2023 GMT</div>
+                            <div className=''>Members: {roomMembers.length}</div>
+                            {/* <div className='text-sm mt-2'>Created at 01 Jan 2023 GMT</div> */}
                         </div>
                         <div className='mt-4 flex'>
-                            <Switch checkedChildren="Public" unCheckedChildren="Private" defaultChecked onChange={(e)=>{
-                                if (e) {
-                                    setRoomType('Public');
-                                } else {
-                                    setRoomType('Private');
-                                }
-                            }} />
-                            <div className='font-semibold ml-3'>{roomType}</div>
+                            <div className='font-semibold'>{roomType}</div>
                         </div>
-                        <div>
+                        {/* <div>
                             <div className='mt-6 flex items-center'>
                                 <div className='mr-4'>Description</div>
-                                <IconEdit className='text-slate-400 cursor-pointer' />
+                                {adminStatus&&<IconEdit className='text-slate-400 cursor-pointer' />}
                             </div>
                             <div className='text-slate-500 text-sm mt-2'>
                                 This is a dedicated space for all students, faculty, 
@@ -87,25 +120,24 @@ export default function Admin(params) {
                                 seeking guidance on assignments, 
                                 or just wanting to catch up with familiar faces, this chat room is the place to be.
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </TabPane>
                 <TabPane tab="Members" itemKey='2'>
                     <div className='w-full h-full flex flex-col py-3 px-4'>
                         <div className='text-xl flex font-semibold'>Participants: <div className='ml-2'>(14)</div></div>
                         <Input className='w-[70%] mt-4' placeholder='Search for participants'></Input>
-                        <div className='mt-6 w-[70%] px-2 flex cursor-pointer hover:scale-[1.01]'>
+                        <div className='mt-6 mb-2 w-[70%] px-2 flex cursor-pointer hover:scale-[1.01]'>
                             <IconCopyAdd className='!text-2xl mr-3'/>
                             <div>Add Members</div>
                         </div>
-                        <div className='mt-4 h-[300px] overflow-y-auto'>
-                            {membersList.map((item) => (
-                                <div key={item.id} className='mb-2 flex w-full items-center'>
-                                    <div className='flex items-center w-[40%]'>
+                        <div className='mt-4 w-full h-[300px] overflow-y-auto'>
+                            {roomMembers&& roomMembers.map((item) => (
+                                <div key={item} className='mb-2 flex w-full items-center'>
+                                    <div className='flex items-center w-[70%]'>
                                         <img className="!w-[40px] !h-[40px] !rounded-[20px]" src={item.avatar} />
-                                        <div className='ml-2'>{item.name}</div>
+                                        <div className='ml-2'>{item}</div>
                                     </div>
-                                    <div className='text-sm text-gray-400 w-[40%]'>Joined {item.joinTime}</div>
                                     <div className='flex items-center w-[30%] justify-between'>
                                             <IconVolume2 className='text-blue-400 cursor-pointer hover:scale-125' size='large' />
                                             <button className='bg-red-400 text-white px-2 py-1 rounded-lg text-sm mt-2'>Remove</button>
@@ -115,7 +147,7 @@ export default function Admin(params) {
                         </div>
                     </div>
                 </TabPane>
-            </Tabs>
+            </Tabs>}
         </div>
     );
 }

@@ -47,7 +47,6 @@ export default function Friends() {
         }).then(data => {
             if (data) {
                 setFriendList(data.usernames);
-                console.log(friendList);
             }
         });
     }
@@ -59,9 +58,9 @@ export default function Friends() {
 
     return(
         <div className="py-6">
-            <div className="divide-y">
             <div className="pb-3 text-2xl font-bold">My Friends</div>
-                {friendList.map((item, i) => (
+            <div className="divide-y min-h-[100px]">
+                {friendList&&friendList.map((item, i) => (
                     <div key={i} className="flex items-center justify-between my-2 py-2">
                         <div className="flex items-center">
                             <div className="!w-[40px] !h-[40px] !rounded-[20px] !shadow-lg mr-4 flex">
@@ -80,6 +79,7 @@ export default function Friends() {
                     </div>
                 ))
                 }
+                {(friendList.length === 0) && <div className="text-center text-gray-400 text-xl relative top-[40px]">No friends yet.</div>}
             </div>
         </div>
     );

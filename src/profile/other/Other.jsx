@@ -5,7 +5,7 @@ import { docCookies } from "../../components/header/cookie";
 import { IconUserAdd } from "@douyinfe/semi-icons";
 
 export default function Other(params) {
-    const [data, setData] = useState(null);
+    const [userData, setUserData] = useState(null);
 
     const username = params.username;
 
@@ -16,7 +16,7 @@ export default function Other(params) {
             }
         }).then(data => {
             if (data) {
-                setData(data);
+                setUserData(data);
             }
         });
     }
@@ -50,20 +50,18 @@ export default function Other(params) {
         }).then(data => {
             if (data) {
                 setFriendList(data.usernames);
-                console.log(friendList);
             }
         });
     }
 
     useEffect(() => {
-        console.log(username)
         getFriendList();
         getUserInfo();
     }, [username]);
 
     return(
         <div className="py-8">
-            {data && <div className="flex">
+            {userData && <div className="flex">
                 <div className="!w-[150px] !h-[150px] !rounded-[75px] !shadow-lg mr-8">
                     <Avatar className="!w-[150px] !h-[150px]" src="https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp" />
                 </div>
@@ -73,16 +71,16 @@ export default function Other(params) {
                     </div>
                     <div>
                         <div className="flex items-center">
-                            <span>Age: {data.age}</span>
+                            <span>Age: {userData.age}</span>
                         </div>
                         <div className="flex items-center">
-                            <span>School: {data.school}</span>
+                            <span>School: {userData.school}</span>
                         </div>
                         <div className="flex items-center">
-                            <span>Interests: {data.interests.map(
+                            <span>Interests: {userData.interests.map(
                                 item=>{
                                     // replace the " with nothing and add comma if it is not the last item
-                                    if (data.interests.indexOf(item) !== data.interests.length - 1) {
+                                    if (userData.interests.indexOf(item) !== userData.interests.length - 1) {
                                         return item.replace(/"/g, '') + ", ";
                                     }
                                     return item.replace(/"/g, '')
