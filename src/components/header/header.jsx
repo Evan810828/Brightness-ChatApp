@@ -25,6 +25,24 @@ const indexItem = [
 
 export default function Header() {
 
+    const logout = () => {
+        fetch(`/user/setActive`, {method:"POST", body: JSON.stringify({
+            username: docCookies.getItem("username"),
+            activeStatus: false
+          })
+        }).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            if (data) {
+                console.log(data);
+            }
+        });
+        docCookies.removeItem("username")
+        window.location.href="/login"
+    }
+
     return (
         // header component
         <div className="fixed w-[60px] h-screen bg-[#F1F1F1] flex flex-col items-center">
@@ -42,7 +60,7 @@ export default function Header() {
                 ))}
             </div>
             <div className='fixed bottom-4'>
-                <IconKey size='extra-large' className='cursor-pointer hover:scale-[1.1]' onClick={()=>{window.location.href="/login"}} />
+                <IconKey size='extra-large' className='cursor-pointer hover:scale-[1.1]' onClick={logout} />
             </div>
         </div>
     )
