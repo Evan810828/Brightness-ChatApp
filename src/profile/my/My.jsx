@@ -1,6 +1,7 @@
 import { Avatar, Button, Icon, Input, TextArea } from "@douyinfe/semi-ui";
 import { IconEdit } from "@douyinfe/semi-icons";
 import { useEffect, useState } from "react";
+import { avatarLinks } from "../../components/avatar";
 
 export default function My(params) {
     const [userData, setUserData] = useState(null);
@@ -51,7 +52,7 @@ export default function My(params) {
         <div className="py-8">
             {userData && <div className="flex">
                 <div className="!w-[150px] !h-[150px] !rounded-[75px] !shadow-lg mr-8">
-                    <Avatar className="!w-[150px] !h-[150px]" src="https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp" />
+                    <Avatar className="!w-[150px] !h-[150px]" src={avatarLinks[userData.avatar]} />
                 </div>
                 <div className="w-full">
                     <div className="flex w-full justify-between items-center">

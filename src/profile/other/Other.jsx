@@ -3,6 +3,7 @@ import { IconEdit } from "@douyinfe/semi-icons";
 import { useEffect, useState } from "react";
 import { docCookies } from "../../components/header/cookie";
 import { IconUserAdd } from "@douyinfe/semi-icons";
+import { avatarLinks } from "../../components/avatar";
 
 export default function Other(params) {
     const [userData, setUserData] = useState(null);
@@ -63,7 +64,7 @@ export default function Other(params) {
         <div className="py-8">
             {userData && <div className="flex">
                 <div className="!w-[150px] !h-[150px] !rounded-[75px] !shadow-lg mr-8">
-                    <Avatar className="!w-[150px] !h-[150px]" src="https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp" />
+                    <Avatar className="!w-[150px] !h-[150px]" src={avatarLinks[userData.avatar]} />
                 </div>
                 <div className="w-max">
                     <div className="flex w-full justify-between items-center">
