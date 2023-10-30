@@ -58,11 +58,33 @@ export default function Inbox() {
     }
 
     const acceptRoomInvitation = (roomName) => {
-
+        fetch(`/chatroom/accept/${roomName}`, {method:"POST", body: JSON.stringify({
+            username: docCookies.getItem("username"),
+        })}).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }
+        ).then(data => {
+            if (data) {
+                getMessages();
+            }
+        });
     }
 
     const declineRoomInvitation = (roomName) => {
-
+        fetch(`/chatroom/decline/${roomName}`, {method:"POST", body: JSON.stringify({
+            username: docCookies.getItem("username"),
+        })}).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }
+        ).then(data => {
+            if (data) {
+                getMessages();
+            }
+        });
     }
 
     const acceptUserInvitation = (username) => {
@@ -81,6 +103,22 @@ export default function Inbox() {
         });
     }
 
+    const declineUserInvitation = (username) => {
+        fetch(`/user/friends/decline`, {method:"POST", body: JSON.stringify({
+            username: docCookies.getItem("username"),
+            senderUsername: username
+          })
+        }).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            if (data) {
+                getMessages();
+            }
+        });
+    }
+
     useEffect(() => {
         getMessages();
     }, []);
@@ -94,17 +132,16 @@ export default function Inbox() {
                         <div>
                             <div className="flex items-center">
                                 <Avatar size="small" src={item.avatar} shape="circle" />
-                                <div className="ml-2">{item.receiver}</div>
+                                <div className="ml-2">{item.owner}</div>
                             </div>
                             <div className="ml-10">
-                                <div className="text-sm text-gray-400">{item.time}</div>
-                                <div className="text-sm">{item.content}</div>
+                                <div className="text-sm">Invited you to join {item.roomName}</div>
                             </div>
                         </div>
                         <div>
                             <div className="flex h-full items-center w-36 justify-between">
-                                <button className="bg-blue-400 text-white px-2 py-1 rounded-sm text-sm mt-2">Accept</button>
-                                <button className="bg-red-400 text-white px-2 py-1 rounded-sm text-sm mt-2">Decline</button>
+                                <button className="bg-blue-400 text-white px-2 py-1 rounded-sm text-sm mt-2" onClick={()=>{acceptRoomInvitation(item.roomName)}}>Accept</button>
+                                <button className="bg-red-400 text-white px-2 py-1 rounded-sm text-sm mt-2" onClick={()=>{declineRoomInvitation(item.roomName)}}>Decline</button>
                             </div>
                         </div>
                     </div>
@@ -124,7 +161,7 @@ export default function Inbox() {
                         <div>
                             <div className="flex h-full items-center w-36 justify-between">
                                 <button className="bg-blue-400 text-white px-2 py-1 rounded-sm text-sm mt-2" onClick={()=>{acceptUserInvitation(item.username)}}>Accept</button>
-                                <button className="bg-red-400 text-white px-2 py-1 rounded-sm text-sm mt-2">Decline</button>
+                                <button className="bg-red-400 text-white px-2 py-1 rounded-sm text-sm mt-2" onClick={()=>{declineUserInvitation(item.username)}}>Decline</button>
                             </div>
                         </div>
                     </div>

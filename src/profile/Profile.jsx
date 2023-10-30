@@ -5,11 +5,12 @@ import Other from "./other/Other";
 import { useEffect, useState } from "react";
 import { IconUserAdd, IconPlus } from "@douyinfe/semi-icons";
 import { docCookies } from "../components/header/cookie";
-import { Button, Input, Toast } from "@douyinfe/semi-ui";
+import { Button, Input, Select, Toast } from "@douyinfe/semi-ui";
 
 export default function Profile(params) {
     const [username, setUsername] = useState('');
     const [roomName, setRoomName] = useState('');
+    const [roomType, setRoomType] = useState('public');
 
     const createChatroom = () => {
         if (roomName === '') {
@@ -21,7 +22,7 @@ export default function Profile(params) {
                 username: username,
                 roomName: roomName,
                 roomSize: 10,
-                roomType: "public"
+                roomType: roomType
               })
         }).then(res => {
             if (res.status === 200) {
@@ -52,14 +53,18 @@ export default function Profile(params) {
             {username ===  docCookies.getItem("username")?
                 <div className="w-full">
                     <div className="flex justify-center w-full mb-6">
+                        <Select className="" defaultValue='public' value={roomType} onChange={(value)=>{setRoomType(value)}}>
+                            <Select.Option value='public'>Public</Select.Option>
+                            <Select.Option value='private'>Private</Select.Option>
+                        </Select>
                         <Input className="!max-w-[50%]" placeholder="Enter the room name" value={roomName} onChange={(value,e)=>{setRoomName(value)}} suffix={
                             <Button className="" theme="solid" onClick={createChatroom}>
                                 Create a Chatroom
                             </Button>
-                        } />
+                        }/>
                     </div>
                     <div className="bg-white rounded-lg shadow-xl w-full px-16 mb-8">
-                        <Friends />
+                        <Friends displayMute={true} displayAdd={false} />
                     </div>
                     <div className="bg-white rounded-lg shadow-xl w-full px-16">
                         <Inbox />

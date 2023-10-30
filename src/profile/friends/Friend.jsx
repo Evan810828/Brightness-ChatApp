@@ -36,8 +36,9 @@ import { docCookies } from '../../components/header/cookie';
 
 // ]
 
-export default function Friends() {
+export default function Friends(params) {
     const [friendList, setFriendList] = useState([]);
+    const {displayMute, displayAdd} = params;
 
     const getFriendList = () => {
         fetch(`/user/friends/${docCookies.getItem("username")}`, {method:"GET"}).then(res => {
@@ -69,12 +70,12 @@ export default function Friends() {
                             <div className={`w-[12px] h-[12px] rounded-[6px] ${item.status === 'online'? 'bg-green-500':'bg-yellow-500'} relative right-6 top-4`} />
                             <div className="text-lg relative right-2">{item}</div>
                         </div>
-                        <div className='w-16 flex justify-between'>
-                            {item.muted? 
+                        <div className='w-max flex justify-between'>
+                            {displayMute&&(item.muted? 
                             <IconMute className='text-gray-400 cursor-pointer hover:scale-125' size='large' />: 
                             <IconVolume2 className='text-blue-400 cursor-pointer hover:scale-125' size='large' />
-                            }
-                            <IconCopyAdd className='text-blue-400 cursor-pointer hover:scale-125' size='large' />
+                            )}
+                            {displayAdd&&<IconCopyAdd className='text-blue-400 cursor-pointer hover:scale-125 ml-4' size='large' />}
                         </div>
                     </div>
                 ))
