@@ -27,14 +27,18 @@ export default function ChatIndex(params) {
 
     useEffect(() => {
         if (chatList && window.location.pathname === "/") {
-            window.location.href = `${chatList[0].roomName}`
+            if (chatList.length > 0) {
+                window.location.href = `/${chatList[0].roomName}`;
+            }
         }
     }, [chatList]);
 
     return(
         <div className="pl-[60px] flex flex-row w-full h-screen fixed z-[-1]" >
             <ChatList chatList={chatList}/>
-            <ChatRoom/>
+            {chatList && 
+                chatList.length>0 ? <ChatRoom/> : <div className="bg-slate-100 m-4 rounded-lg text-xl relative flex items-center h-full w-full justify-center text-gray-400">You have not joined any room yet!</div>
+            }
         </div>
     )
 }

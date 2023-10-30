@@ -125,8 +125,8 @@ export default function Admin(params) {
                 </TabPane>
                 <TabPane tab="Members" itemKey='2'>
                     <div className='w-full h-full flex flex-col py-3 px-4'>
-                        <div className='text-xl flex font-semibold'>Participants: <div className='ml-2'>(14)</div></div>
-                        <Input className='w-[70%] mt-4' placeholder='Search for participants'></Input>
+                        <div className='text-xl flex font-semibold'>Participants: <div className='ml-2'>({roomMembers.length})</div></div>
+                        {/* <Input className='w-[70%] mt-4' placeholder='Search for participants'></Input> */}
                         <div className='mt-6 mb-2 w-[70%] px-2 flex cursor-pointer hover:scale-[1.01]'>
                             <IconCopyAdd className='!text-2xl mr-3'/>
                             <div>Add Members</div>

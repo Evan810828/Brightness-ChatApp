@@ -114,6 +114,8 @@ export default function ChatRoom(params) {
     const [editIndex, setEditIndex] = useState(-1);
     const [roomDetails, setRoomDetails] = useState(undefined);
 
+    const roomName = window.location.pathname.split('/')[1];
+
     const change = () => {
         setVisible(!visible);
     };
@@ -146,7 +148,7 @@ export default function ChatRoom(params) {
     }
 
     const getRoomDetails = () => {
-        fetch(`/chatroom/details/${window.location.pathname.split('/')[1]}`, {method:"GET"}).then(res => {
+        fetch(`/chatroom/details/${roomName}`, {method:"GET"}).then(res => {
             if (res.status === 200) {
                 return res.json();
             }

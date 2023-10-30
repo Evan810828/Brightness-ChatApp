@@ -32,7 +32,6 @@ export default function Social() {
         ).then(data => {
             if (data) {
                 setJoinedRoomlist(data.roomNames);
-                console.log(data);
             }
         });
     }
@@ -50,6 +49,8 @@ export default function Social() {
         }).then(data => {
             if (data) {
                 Toast.success("Joined!");
+                getRoomlist();
+                getJoinedRoomlist();
             }
         });
     }

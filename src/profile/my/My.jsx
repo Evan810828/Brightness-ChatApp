@@ -53,11 +53,15 @@ export default function My(params) {
                 <div className="!w-[150px] !h-[150px] !rounded-[75px] !shadow-lg mr-8">
                     <Avatar className="!w-[150px] !h-[150px]" src="https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp" />
                 </div>
-                <div className="w-max">
+                <div className="w-full">
                     <div className="flex w-full justify-between items-center">
                         <div className="text-3xl font-semibold mb-4">{username}</div>
                         {!edit?<IconEdit className="ml-2 text-slate-500 cursor-pointer" onClick={()=>{setEdit(true)}} />:
-                        <Button className="ml-2" theme="solid" onClick={()=>{setEdit(false);updateUserInfo()}}>Save</Button>}
+                        <div>
+                            <Button className="ml-2" theme="solid" onClick={()=>{setEdit(false);updateUserInfo()}}>Save</Button>
+                            <Button className="ml-2" type="danger" onClick={()=>{setEdit(false)}}>Cancel</Button>
+                        </div>
+                        }
                     </div>
                     <div>
                         <div className="flex items-center">
@@ -67,7 +71,7 @@ export default function My(params) {
                             <span className="flex items-center">School: {edit?<Input className="ml-2" defaultValue={userData.school} value={school} onChange={(value, e)=>{setSchool(value)}} />:userData.school}</span>
                         </div>
                         <div className="flex items-center">
-                            <span className="flex items-center">Interests: {edit?<Input className="ml-2" defaultValue={userData.interests} value={interests} onChange={(value, e)=>{setInterests(value)}} />:userData.interests.map(
+                            <span className="flex items-center">Interests: {edit?<Input className="ml-2 mt-2" defaultValue={userData.interests} value={interests} onChange={(value, e)=>{setInterests(value)}} />:userData.interests.map(
                                 item=>{
                                     // replace the " with nothing and add comma if it is not the last item
                                     if (userData.interests.indexOf(item) !== userData.interests.length - 1) {
@@ -77,9 +81,14 @@ export default function My(params) {
                                 }
                             )}</span>
                         </div>
-                        <div className="mt-6">
+                        <div className="mt-4">
                             <span className="text-slate-500">
-                            {edit?<TextArea value={description} onChange={(value, e)=>{setDescription(value)}} />:""}
+                            {edit?
+                            <div>
+                                Description
+                                <TextArea className="mt-2 " value={description} onChange={(value, e)=>{setDescription(value)}} />
+                            </div>
+                            :userData.description}
                             </span>
                         </div>
                     </div>
