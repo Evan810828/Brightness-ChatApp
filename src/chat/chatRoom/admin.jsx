@@ -1,54 +1,8 @@
 import { Image, Tabs, TabPane, Input, Switch, Modal, Toast, Button } from '@douyinfe/semi-ui';
-import { IconEdit, IconCopyAdd, IconVolume2,  } from '@douyinfe/semi-icons';
+import { IconEdit, IconCopyAdd, IconVolume2, IconExit, IconMute  } from '@douyinfe/semi-icons';
 import { docCookies } from '../../components/header/cookie';
 import { useEffect, useState } from 'react';
-import Friends from '../../profile/friends/Friend';
 import { avatarLinks } from '../../components/avatar';
-
-const membersList = [
-    {
-        id: "john",
-        avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTj_UkBWZBjd-K5TxEQuPAUd6Gj7BKFBsR49A&usqp=CAU",
-        name: "John",
-        joinTime: "2 weeks ago"
-    },
-    {
-        id: "sara",
-        avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-3H6IHZNPQv3QBicSDtkTtsErOzQj1NrZNw&usqp=CAU",
-        name: "Sara",
-        joinTime: "1 month ago"
-    },
-    {
-        id: "will",
-        avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRn5pFYFPURn4Xq6_gbN-zlp_yTeGYS5M2_fw&usqp=CAU",
-        name: "William",
-        joinTime: "3 days ago"
-    },
-    {
-        id: "mia",
-        avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXM5VoIfvhRC2p7byLim5MD2WNIYW949cEIg&usqp=CAU",
-        name: "Mia",
-        joinTime: "1 week ago"
-    },
-    {
-        id: "frankran",
-        avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9wvt48MJrdhdoESZm1YX_N9ext4H4IxE0uA&usqp=CAU",
-        name: "Frank Ran",
-        joinTime: "5 days ago"
-    },
-    {
-        id: "feifeili",
-        avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFJ4AbbN5qroIYS-w7tGMlMK7ZvXeaKnuNRw&usqp=CAU",
-        name: "Feifei Li",
-        joinTime: "3 weeks ago"
-    },
-    {
-        id: "danniel",
-        avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQK2sdSvFkSyfHsmwmhC4uAYymBGFYTsY4i4A&usqp=CAU",
-        name: "Danniel Wang",
-        joinTime: "6 days ago"
-    }
-];
 
 export default function Admin(params) {
     const [activeKey, setActiveKey] = useState('1');
@@ -60,6 +14,12 @@ export default function Admin(params) {
     const [edit, setEdit] = useState(false);
     const [newRoomName, setNewRoomName] = useState('');
     const [newCapacity, setNewCapacity] = useState();
+    const [reportedUSer, setReportedUSer] = useState([]);
+    const [bannedUsers, setBannedUsers] = useState([]);
+    const [banReason, setBanReason] = useState('');
+    const [banModalVisible, setBanModalVisible] = useState(false);
+    const [bannedUser, setBannedUser] = useState(undefined)
+    const [blockedUsers, setBlockedUsers] = useState([]);
 
     
     const [friendList, setFriendList] = useState([]);
@@ -104,7 +64,6 @@ export default function Admin(params) {
                     console.log(data.username);
                 } else {
                     setAdminStatus(false);
-                    console.log(data);
                 }
             }
         });
@@ -170,6 +129,78 @@ export default function Admin(params) {
                 Toast.success("User blocked!");
                 setRoomDetails(params.roomDetails);
                 getRoomMembers();
+                getBlockList();
+            }
+        });
+    }
+
+    const getBlockList = () => {
+        fetch(`/user/blockList/${docCookies.getItem('username')}`, {method:"GET"}).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            setBlockedUsers(data.blockList)
+        });
+    }
+
+    const unblockUser = (username) => {
+        fetch(`/chatroom/unblock`, {method:"POST",body: JSON.stringify({
+            senderName: docCookies.getItem("username"),
+            receiverName: username,
+        })}).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            if (data) {
+                Toast.success("User unblocked!");
+                setRoomDetails(params.roomDetails);
+                getRoomMembers();
+                getBlockList();
+            }
+        });
+    }
+
+    const getReportedUSers = () => {
+        fetch(`/list/chatroom/reported/${params.roomDetails.roomName}`, {method:"GET"}).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            if (data) {
+                setReportedUSer(data.reportedUsers);
+            }
+        });
+    }
+
+    const banUser = (username) => {
+        fetch(`/chatroom/ban`, {method:"POST",body: JSON.stringify({
+            username: username,
+            senderUsername: docCookies.getItem("username"),
+            reason: banReason,
+            roomName: roomDetails.roomName
+        })}).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            if (data) {
+                Toast.success("User banned!");
+                setRoomDetails(params.roomDetails);
+                getRoomMembers();
+            }
+        });
+    }
+
+    const getBannedUsers = () => {
+        fetch(`/list/chatroom/banned/${params.roomDetails.roomName}`, {method:"GET"}).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            if (data) {
+                setBannedUsers(data.bannedUsers);
             }
         });
     }
@@ -179,6 +210,9 @@ export default function Admin(params) {
         setNewRoomName(params.roomDetails.roomName)
         getRoomMembers();
         getAdminStatus();
+        getReportedUSers();
+        getBannedUsers();
+        getBlockList();
     }, [params]);
 
     return(
@@ -238,13 +272,60 @@ export default function Admin(params) {
                                         <img className="!w-[40px] !h-[40px] !rounded-[20px]" src={avatarLinks[item.avatar]} />
                                         <div className='ml-2'>{item.username}</div>
                                     </div>
-                                    {(item.username!==docCookies.getItem('username'))&&<div className='flex items-center w-[30%] justify-between'>
-                                        <IconVolume2 className='text-blue-400 cursor-pointer hover:scale-125' size='large' />
-                                        {(adminStatus)&&<button className='bg-red-400 text-white px-2 py-1 rounded-lg text-sm' onClick={()=>{kickUser(item.username)}}>Remove</button>}
-                                    </div>}
+                                    {(item.username!==docCookies.getItem('username'))?<div className='flex items-center w-[70%] justify-between'>
+                                        {blockedUsers?
+                                            ((blockedUsers.indexOf(item.username) === -1)?
+                                            <IconVolume2 className='text-blue-400 cursor-pointer hover:scale-125' size='large' onClick={()=>{blockUser(item.username)}} />:
+                                            <IconMute className='text-slate-400 cursor-pointer hover:scale-125' size='large' onClick={()=>{unblockUser(item.username)}} />):null
+                                        }
+                                        {(adminStatus)?
+                                            (
+                                                <div className='flex'>
+                                                    <button className='bg-red-400 text-white px-3 py-1 rounded-lg text-sm ml-4' onClick={()=>{
+                                                        setBanModalVisible(true);
+                                                        setBannedUser(item.username);
+                                                    }}>Ban</button>
+                                                </div>
+                                            )
+                                            :
+                                            <button className='bg-red-400 text-white px-3 py-1 rounded-lg text-sm' onClick={()=>{}}>Report</button>
+                                        }
+                                    </div>:
+                                    <div className='flex items-center w-[70%] justify-start'>
+                                        <IconExit className='text-red-400 !text-xl cursor-pointer' onClick={()=>{kickUser(docCookies.getItem('username'))}} />
+                                    </div>
+                                    }
                                 </div>
                             ))}
                         </div>
+                    </div>
+                </TabPane>
+                <TabPane tab="Delinquent Users" itemKey='3'>
+                    <div>
+                        <div className='text-xl font-bold'>Reported Users</div>
+                        <div className='p-4'>{reportedUSer&&reportedUSer.map((item, i)=>{
+                            return(
+                                <div key={item} className='mb-3 flex w-full items-center'>
+                                    <div className='flex items-center w-[70%] cursor-pointer' onClick={()=>{window.location.href=`/profile/${item.username}`}}>
+                                        <img className="!w-[40px] !h-[40px] !rounded-[20px]" src={avatarLinks[item.avatar]} />
+                                        <div className='ml-2'>{item.username}</div>
+                                    </div>
+                                </div>
+                            )
+                        })}</div>
+                    </div>
+                    <div>
+                        <div className='text-xl font-bold'>Banned Users</div>
+                        <div className='p-4'>{bannedUsers&&bannedUsers.map((item, i)=>{
+                            return(
+                                <div key={item} className='mb-3 flex w-full items-center'>
+                                    <div className='flex items-center w-[70%] cursor-pointer' onClick={()=>{window.location.href=`/profile/${item.username}`}}>
+                                        <img className="!w-[40px] !h-[40px] !rounded-[20px]" src={avatarLinks[item.avatar]} />
+                                        <div className='ml-2'>{item.username}</div>
+                                    </div>
+                                </div>
+                            )
+                        })}</div>
                     </div>
                 </TabPane>
             </Tabs>}
@@ -268,6 +349,18 @@ export default function Admin(params) {
                         ))
                         }
                         {(friendList.length === 0) && <div className="text-center text-gray-400 text-xl relative top-[40px]">No friends yet.</div>}
+                    </div>
+                </div>
+            </Modal>
+            <Modal visible={banModalVisible} onCancel={()=>{setBanModalVisible(false)}} footer={null} header={null}>
+                <div className='p-4'>
+                    <div>
+                        <div className='mb-2'>Please specify your reason here</div>
+                        <Input className="w-full" value={banReason} onChange={(value,e)=>{setBanReason(value)}} placeholder={"Ban reason"} />
+                    </div>
+                    <div className='w-full flex justify-end'>
+                        <Button className="mt-4" onClick={()=>{setBanModalVisible(false)}}>Cancel</Button>
+                        <Button className="mt-4 ml-2" onClick={()=>{banUser(bannedUser);setBanModalVisible(false)}}>Ban</Button>
                     </div>
                 </div>
             </Modal>

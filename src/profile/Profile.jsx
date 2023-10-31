@@ -53,7 +53,7 @@ export default function Profile(params) {
             {username ===  docCookies.getItem("username")?
                 <div className="w-full">
                     <div className="flex justify-center w-full mb-6">
-                        <Select className="" defaultValue='public' value={roomType} onChange={(value)=>{setRoomType(value)}}>
+                        <Select className="!border-none" defaultValue='public' value={roomType} onChange={(value)=>{setRoomType(value)}}>
                             <Select.Option value='public'>Public</Select.Option>
                             <Select.Option value='private'>Private</Select.Option>
                         </Select>
