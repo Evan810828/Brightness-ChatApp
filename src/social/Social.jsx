@@ -48,6 +48,14 @@ export default function Social() {
             }
         }).then(data => {
             if (data) {
+                if(data.result === "failed: user is banned from the room") {
+                    Toast.error("You are banned from this room!");
+                    return;
+                } else if(data.result === "failed: user is banned") {
+                    Toast.error("You are globally banned!");
+                    return;
+
+                }
                 Toast.success("Joined!");
                 getRoomlist();
                 getJoinedRoomlist();

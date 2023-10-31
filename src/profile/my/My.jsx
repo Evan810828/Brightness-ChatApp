@@ -82,6 +82,9 @@ export default function My(params) {
                                 }
                             )}</span>
                         </div>
+                        <div>
+                            <span className="my-2 text-red-500">Your messages have been detected as hate speech for <span className="font-bold text-xl">{userData.hateSpeechCounter}</span> time. You will be banned when it reaches 10.</span>
+                        </div>
                         <div className="mt-4">
                             <span className="text-slate-500">
                             {edit?
