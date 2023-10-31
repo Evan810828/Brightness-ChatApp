@@ -22,6 +22,11 @@ export default function ChatIndex(params) {
     }
 
     useEffect(() => {
+        console.log("Rendering CHATINDEX")
+        if(chatList!==undefined){
+        }
+        console.log(chatList)
+
         getChatList();
     }, []);
 

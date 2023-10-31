@@ -1,5 +1,5 @@
 import { Avatar, Image, Input } from '@douyinfe/semi-ui';
-import { IconEmoji, IconLikeThumb, IconDislikeThumb, IconEdit } from '@douyinfe/semi-icons';
+import { IconEmoji, IconLikeThumb, IconDislikeThumb, IconEdit,IconCheckboxTick } from '@douyinfe/semi-icons';
 import { docCookies } from '../../components/header/cookie';
 import React, { useEffect, useState,useRef  } from 'react';
 import Admin from './admin';
@@ -107,9 +107,20 @@ export default function ChatRoom(params) {
     const [editIndex, setEditIndex] = useState(-1);
     const [roomDetails, setRoomDetails] = useState(undefined);
     const [messageHistory, setMessageHistory] = useState();
+    const [messageUpdated,setMessageUpdated] = useState(true);
+    const [lastMessage,setLastMessage] = useState();
     const roomName = window.location.pathname.split('/')[1];
     const username = docCookies.getItem("username");
     const connection = useRef(null)
+    const scrollRef = useRef(null);
+
+    const scrollToBottom = () => {
+        const el = scrollRef.current;
+        if (el) {
+        el.scrollTop = el.scrollHeight;
+        }
+    };
+
     const change = () => {
         setVisible(!visible);
     };
@@ -119,7 +130,7 @@ export default function ChatRoom(params) {
     }
 
     const editMessage = (i) => {
-        setInputValue(data[i].message);
+        setInputValue(chatData[i].content);
         document.getElementById(i+"m").classList.add("!bg-blue-300");
         setMode("edit");
         setEditIndex(i);
@@ -127,7 +138,7 @@ export default function ChatRoom(params) {
 
     const onEdit = () => {
         let temp = chatData;
-        temp[editIndex].message = inputValue;
+        temp[editIndex].content = inputValue;
         setChatData(temp);
         document.getElementById(editIndex+"m").classList.remove("!bg-blue-300");
         setInputValue("");
@@ -162,6 +173,7 @@ export default function ChatRoom(params) {
             if (data) {
                 console.log(data)
                 setChatData(data.messages)
+                console.log(chatData)
             }
         });
     }
@@ -179,36 +191,53 @@ export default function ChatRoom(params) {
             }
         })
     }
-    
-    useEffect(() => {
-        getRoomDetails();
-        getChatHistory();
-        if(connection.current!==null){
 
+    const updateChat = (messageObject) => {
+
+        console.log(chatData)
+        if(messageObject&&messageObject.senderName === username){
+            messageObject.check = true;
         }
-        else{
-            createSocketConnection()
-        }
-        
-    }, []);
+       if(messageObject){
+           setChatData([
+               ...chatData,
+               messageObject
+           ])
+       }
+        console.log(chatData)
+    }
+    
     const createSocketConnection = () => {
         const ws = new WebSocket("wss://dg76-comp504-chat-api-0a154efee1fc.herokuapp.com/chatapp?roomName="+roomName+"&username="+username);
         ws.onopen = (event) => {
             connection.current = ws
+            console.log(connection.current)
         };
-        ws.onmessage = function (event) {
+        ws.onmessage =  (event) => {
             const json = JSON.parse(event.data);
-            try {
-                if ((json.event == 'data')) {
-                }
-            } catch (err) {
-                console.log(err);
-            }
+            
+            setLastMessage(json)
         };
         ws.onclose = (event) => {
             createSocketConnection()
         }
     }
+
+    useEffect(() => {
+        getRoomDetails();
+        getChatHistory();
+        if(connection.current===null){
+            createSocketConnection()
+        }
+    }, []);
+    
+    useEffect(()=>{
+        updateChat(lastMessage)
+    },[lastMessage])
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [chatData]); 
 
     return (
         <div  className="flex flex-row w-full h-[100%] pl-3">
@@ -222,13 +251,13 @@ export default function ChatRoom(params) {
                         <div className="h-full text-2xl mx-5 mt-3 cursor-pointer hover:text-slate-500 hover:scale-[1.2]" onClick={change}>...</div>
                         {visible ? null : <Admin roomDetails={roomDetails} />}
                     </div>
-                    <div className='flex flex-col h-screen bg-chat'>
-                        <div className='h-[84vh] overflow-y-auto py-2 bg-[#F1F1F1]'>
+                    <div  className='flex flex-col h-screen bg-chat'>
+                        <div  ref={scrollRef} className='flex  flex-col h-[84vh] overflow-y-auto py-2 bg-[#F1F1F1]'>
                             <div className='flex w-full justify-center mt-2'>
                                 <div className='bg-slate-300 text-white w-max px-2 rounded-lg text-sm'>11:20</div>
                             </div>
                             {chatData.map((item, i) => {
-                                return !item.senderName === username ?
+                                return item.senderName !== username ?
                                 (
                                     <div key={i} className='px-12 py-4 flex w-full items-start' onMouseOver={()=>{changeContextShow(i, "block")}} onMouseOut={()=>{changeContextShow(i, "none")}}>
                                         <div className='flex'>
@@ -260,6 +289,10 @@ export default function ChatRoom(params) {
                                             <IconDislikeThumb className='!text-blue-400 hover:scale-[1.2] cursor-pointer !text-xl' />
                                         </div>
                                         <div className='flex'>
+                                            
+                                            {item.check ?<div className='flex flex-col flex-col-reverse'>
+                                            <IconCheckboxTick />
+                                            </div> :  null}
                                             <div className='mr-2 w-max items-edn'>
                                                 <div className='ml-1 text-sm mb-1 text-right'>{item.senderName}</div>
                                                 <div id={i+"m"} className='bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light w-max'>{item.content}</div>
