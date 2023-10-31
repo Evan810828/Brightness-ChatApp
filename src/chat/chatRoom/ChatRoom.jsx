@@ -1,7 +1,7 @@
 import { Avatar, Image, Input } from '@douyinfe/semi-ui';
 import { IconEmoji, IconLikeThumb, IconDislikeThumb, IconEdit } from '@douyinfe/semi-icons';
 import { docCookies } from '../../components/header/cookie';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useRef  } from 'react';
 import Admin from './admin';
 import { avatarLinks } from "../../components/avatar";
 
@@ -69,7 +69,7 @@ let data = [
         reactList: [],
     },
     {
-        id: "Isabella",
+        senderName: "Isabella",
         avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQK2sdSvFkSyfHsmwmhC4uAYymBGFYTsY4i4A&usqp=CAU',
         content: "I am! Excited for it.",
         time: "Yesterday",
@@ -109,7 +109,7 @@ export default function ChatRoom(params) {
     const [messageHistory, setMessageHistory] = useState();
     const roomName = window.location.pathname.split('/')[1];
     const username = docCookies.getItem("username");
-    const [ws, setWs] = useState();
+    const connection = useRef(null)
     const change = () => {
         setVisible(!visible);
     };
@@ -166,8 +166,8 @@ export default function ChatRoom(params) {
         });
     }
 
-    const sendMessage = () => {
-        ws.send(inputValue)
+    let sendMessage = () => {
+        connection.current.send(inputValue)
         fetch(`/chatroom/message`, {method:"POST", body: JSON.stringify({
             username: username,
             roomName: roomName,
@@ -179,13 +179,22 @@ export default function ChatRoom(params) {
             }
         })
     }
+    
     useEffect(() => {
         getRoomDetails();
         getChatHistory();
+        if(connection.current!==null){
+
+        }
+        else{
+            createSocketConnection()
+        }
+        
+    }, []);
+    const createSocketConnection = () => {
         const ws = new WebSocket("wss://dg76-comp504-chat-api-0a154efee1fc.herokuapp.com/chatapp?roomName="+roomName+"&username="+username);
-        setWs(ws)
         ws.onopen = (event) => {
-            console.log(111)
+            connection.current = ws
         };
         ws.onmessage = function (event) {
             const json = JSON.parse(event.data);
@@ -196,8 +205,10 @@ export default function ChatRoom(params) {
                 console.log(err);
             }
         };
-    }, []);
-
+        ws.onclose = (event) => {
+            createSocketConnection()
+        }
+    }
 
     return (
         <div  className="flex flex-row w-full h-[100%] pl-3">
@@ -261,7 +272,7 @@ export default function ChatRoom(params) {
                                                     </div> 
                                                 : null} */}
                                             </div>
-                                            <Avatar src={avatarLinks[item.avatar]} onClick={()=>console.log("Clicked")}  />
+                                            <Avatar src={avatarLinks[item.avatar]} onClick={()=>window.location.href=`/profile/${item.senderName}`}  />
                                         </div>
                                     </div>
                                 )
