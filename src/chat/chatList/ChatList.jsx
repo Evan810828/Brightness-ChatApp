@@ -25,7 +25,7 @@ export default function ChatList(params) {
                                         <div className='text-sm text-slate-500 font-light'>{item.latestMessage?formatTimestamp(item.latestMessage.timestamp):null}</div>
                                     </div>
                                     <span className='text-sm font-light text-slate-500'>
-                                        <span>{item.latestMessage?item.latestMessage.senderName:null}:</span>
+                                        <span>{item.latestMessage?item.latestMessage.senderName+":":null}</span>
                                         <span className='ml-1'>{item.latestMessage?item.latestMessage.content:null}</span>
                                     </span>
                                 </div>
