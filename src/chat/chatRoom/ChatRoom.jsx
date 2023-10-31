@@ -1,72 +1,69 @@
 import { Avatar, Image, Input } from '@douyinfe/semi-ui';
 import { IconEmoji, IconLikeThumb, IconDislikeThumb, IconEdit } from '@douyinfe/semi-icons';
+import { docCookies } from '../../components/header/cookie';
 import React, { useEffect, useState } from 'react';
 import Admin from './admin';
+import { avatarLinks } from "../../components/avatar";
 
 let data = [
     {
-        id: "Akutar Banana",
+        senderName: "Akutar Banana",
         avatar: 'https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp',
         message: "Hey, did you attend Prof. Mack's lecture today?",
         time: "Yesterday",
-        yours: true,
         reactList: [],
     },
     {
-        id: "Mark",
+        senderName: "Mark",
         avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTj_UkBWZBjd-K5TxEQuPAUd6Gj7BKFBsR49A&usqp=CAU',
-        message: "Not today, unfortunately. Had a meeting.",
+        content: "Not today, unfortunately. Had a meeting.",
         time: "Yesterday",
         yours: false,
         reactList: [],
     },
     {
-        id: "Anna",
+        senderName: "Anna",
         avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-3H6IHZNPQv3QBicSDtkTtsErOzQj1NrZNw&usqp=CAU',
-        message: "You guys missed out. It was really interesting!",
+        content: "You guys missed out. It was really interesting!",
         time: "Yesterday",
-        yours: false,
         reactList: [],
     },
     {
-        id: "Akutar Banana",
+        senderName: "Akutar Banana",
         avatar: 'https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp',
-        message: <p>Don't worry, I got the link for the recording! 
+        content: <p>Don't worry, I got the link for the recording! 
             <a className='hover:underline text-blue-500 cursor-pointer hover:underline-offset-2 ml-1' href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'>
                 https://www.youtube.com/watch?v=dQw4w9WgXcQ
             </a></p>,
         time: "Yesterday",
-        yours: true,
         reactList: [],
     },
     {
-        id: "Mark",
+        senderName: "Mark",
         avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTj_UkBWZBjd-K5TxEQuPAUd6Gj7BKFBsR49A&usqp=CAU',
-        message: "Bummer. Could you share the notes?",
+        content: "Bummer. Could you share the notes?",
         time: "Yesterday",
-        yours: false,
         reactList: [],
     },
     {
-        id: "Lucy",
+        senderName: "Lucy",
         avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXM5VoIfvhRC2p7byLim5MD2WNIYW949cEIg&usqp=CAU',
-        message: "I have the notes. I'll share them with you both.",
+        content: "I have the notes. I'll share them with you both.",
         time: "Yesterday",
         yours: false,
         reactList: [],
     },
     {
-        id: "Mark",
+        senderName: "Mark",
         avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTj_UkBWZBjd-K5TxEQuPAUd6Gj7BKFBsR49A&usqp=CAU',
-        message: "Thanks, Lucy!",
+        content: "Thanks, Lucy!",
         time: "Yesterday",
-        yours: false,
         reactList: [],
     },
     {
-        id: "Sophie",
+        senderName: "Sophie",
         avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9wvt48MJrdhdoESZm1YX_N9ext4H4IxE0uA&usqp=CAU',
-        message: "Anyone attending the rock concert tonight?",
+        content: "Anyone attending the rock concert tonight?",
         time: "Yesterday",
         yours: false,
         reactList: [],
@@ -74,33 +71,29 @@ let data = [
     {
         id: "Isabella",
         avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQK2sdSvFkSyfHsmwmhC4uAYymBGFYTsY4i4A&usqp=CAU',
-        message: "I am! Excited for it.",
+        content: "I am! Excited for it.",
         time: "Yesterday",
-        yours: false,
         reactList: [],
     },
     {
-        id: "Akutar Banana",
+        senderName: "Akutar Banana",
         avatar: 'https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp',
-        message: "Count me in too!",
+        content: "Count me in too!",
         time: "Yesterday",
-        yours: true,
         reactList: [],
     },
     {
-        id: "Emma",
+        senderName: "Emma",
         avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuFzAIR675Zc4LuhA3P2bVCgE6zKcgJIu50Q&usqp=CAU',
-        message: "I wish I could, but I have a prior commitment.",
+        content: "I wish I could, but I have a prior commitment.",
         time: "Yesterday",
-        yours: false,
         reactList: [],
     },
     {
-        id: "Akutar Banana",
+        senderName: "Akutar Banana",
         avatar: 'https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp',
-        message: "No worries, Emma. Next time!",
+        content: "No worries, Emma. Next time!",
         time: "Yesterday",
-        yours: true,
         reactList: [],
     }
 ];
@@ -113,9 +106,10 @@ export default function ChatRoom(params) {
     const [mode, setMode] = useState("message");
     const [editIndex, setEditIndex] = useState(-1);
     const [roomDetails, setRoomDetails] = useState(undefined);
-
+    const [messageHistory, setMessageHistory] = useState();
     const roomName = window.location.pathname.split('/')[1];
-
+    const username = docCookies.getItem("username");
+    const [ws, setWs] = useState();
     const change = () => {
         setVisible(!visible);
     };
@@ -159,9 +153,51 @@ export default function ChatRoom(params) {
         });
     }
 
+    const getChatHistory = () => {
+        fetch(`/list/chatroom/message/${roomName}/${username}`, {method:"GET"}).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            if (data) {
+                console.log(data)
+                setChatData(data.messages)
+            }
+        });
+    }
+
+    const sendMessage = () => {
+        ws.send(inputValue)
+        fetch(`/chatroom/message`, {method:"POST", body: JSON.stringify({
+            username: username,
+            roomName: roomName,
+            message: inputValue
+          })
+        }).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        })
+    }
     useEffect(() => {
         getRoomDetails();
+        getChatHistory();
+        const ws = new WebSocket("wss://dg76-comp504-chat-api-0a154efee1fc.herokuapp.com/chatapp?roomName="+roomName+"&username="+username);
+        setWs(ws)
+        ws.onopen = (event) => {
+            console.log(111)
+        };
+        ws.onmessage = function (event) {
+            const json = JSON.parse(event.data);
+            try {
+                if ((json.event == 'data')) {
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        };
     }, []);
+
 
     return (
         <div  className="flex flex-row w-full h-[100%] pl-3">
@@ -180,23 +216,23 @@ export default function ChatRoom(params) {
                             <div className='flex w-full justify-center mt-2'>
                                 <div className='bg-slate-300 text-white w-max px-2 rounded-lg text-sm'>11:20</div>
                             </div>
-                            {data.map((item, i) => {
-                                return !item.yours ?
+                            {chatData.map((item, i) => {
+                                return !item.senderName === username ?
                                 (
                                     <div key={i} className='px-12 py-4 flex w-full items-start' onMouseOver={()=>{changeContextShow(i, "block")}} onMouseOut={()=>{changeContextShow(i, "none")}}>
                                         <div className='flex'>
-                                            <Avatar src={item.avatar} onClick={()=>window.location.href=`/profile/${item.id}`}  />
+                                            <Avatar src={avatarLinks[item.avatar]} onClick={()=>window.location.href=`/profile/${item.senderName}`}/>
                                             <div className='ml-2'>
-                                                <div className='ml-1 text-sm mb-1'>{item.id}</div>
-                                                <div className='bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light'>{item.message}</div>
-                                                {chatData[i].reactList.length > 0 ? 
+                                                <div className='ml-1 text-sm mb-1'>{item.senderName}</div>
+                                                <div className='bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light'>{item.content}</div>
+                                                {/* {chatData[i].reactList.length > 0 ? 
                                                     <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
                                                         <div className='flex '>
                                                             <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3'/> 
                                                             <Avatar className='!w-[1.5rem] !h-[1.5rem]' src="https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp" />
                                                         </div>
                                                     </div> 
-                                                : null}
+                                                : null} */}
                                             </div>
                                         </div>
                                         <div className='relative h-min bg-white shadow-lg rounded px-2 pt-2 pb-1 left-2 hidden' id={i}>
@@ -214,18 +250,18 @@ export default function ChatRoom(params) {
                                         </div>
                                         <div className='flex'>
                                             <div className='mr-2 w-max items-edn'>
-                                                <div className='ml-1 text-sm mb-1 text-right'>{item.id}</div>
-                                                <div id={i+"m"} className='bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light w-max'>{item.message}</div>
-                                                {chatData[i].reactList.length > 0 ? 
+                                                <div className='ml-1 text-sm mb-1 text-right'>{item.senderName}</div>
+                                                <div id={i+"m"} className='bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light w-max'>{item.content}</div>
+                                                {/* {chatData[i].reactList.length > 0 ? 
                                                     <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
                                                         <div className='flex '>
                                                             <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3' /> 
                                                             <Avatar className='!w-[1.5rem] !h-[1.5rem]' src="https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp" />
                                                         </div>
                                                     </div> 
-                                                : null}
+                                                : null} */}
                                             </div>
-                                            <Avatar src={item.avatar} onClick={()=>console.log("Clicked")}  />
+                                            <Avatar src={avatarLinks[item.avatar]} onClick={()=>console.log("Clicked")}  />
                                         </div>
                                     </div>
                                 )
@@ -241,7 +277,9 @@ export default function ChatRoom(params) {
                             <div>
                                 <button 
                                     className='bg-blue-400 text-white px-2 py-1 rounded-sm text-sm ml-2 hover:text-blue-500 hover:bg-white hover:scale-[1.2]'
-                                    onClick={()=>{if (mode === "message") {} else onEdit()}}
+                                    onClick={()=>{if (mode === "message") {
+                                        sendMessage()
+                                    } else onEdit()}}
                                 >
                                     Send
                                 </button>
