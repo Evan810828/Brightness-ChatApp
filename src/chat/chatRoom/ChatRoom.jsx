@@ -282,58 +282,119 @@ export default function ChatRoom(params) {
                                 <div className='bg-slate-300 text-white w-max px-2 rounded-lg text-sm'>11:20</div>
                             </div>
                             {chatData.map((item, i) => {
-                                return item.senderName !== username ?
-                                (
-                                    <div key={i} className='px-12 py-4 flex w-full items-start' onMouseOver={()=>{changeContextShow(i, "block")}} onMouseOut={()=>{changeContextShow(i, "none")}}>
-                                        <div className='flex'>
-                                            <Avatar src={avatarLinks[item.avatar]} onClick={()=>window.location.href=`/profile/${item.senderName}`}/>
-                                            <div className='ml-2'>
-                                                <div className='ml-1 text-sm mb-1'>{item.senderName}</div>
-                                                <div className='max-w-[300px] bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light'>{item.content}</div>
-                                                {chatData[i].likes && chatData[i].likes.length > 0 ? 
-                                                    <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
-                                                        <div className='flex '>
-                                                            <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3'/> 
-                                                            <Avatar className='!w-[1.5rem] !h-[1.5rem]' src={avatarLinks[item.avatar]} />
-                                                        </div>
-                                                    </div> 
-                                                : null}
+                                if(item.status === 1){
+                                    return (<div className='px-12 py-4 flex w-full justify-center' ><div className='max-w-[700px] bg-gray-300 px-3 pt-1 pb-2 rounded-lg text-sm font-light'>{item.content}</div></div>)
+
+                                }
+                                else if(item.status === 0){
+                                    return item.senderName !== username ?
+                                    (
+                                        <div key={i} className='px-12 py-4 flex w-full items-start' onMouseOver={()=>{changeContextShow(i, "block")}} onMouseOut={()=>{changeContextShow(i, "none")}}>
+                                            <div className='flex'>
+                                                <Avatar src={avatarLinks[item.avatar]} onClick={()=>window.location.href=`/profile/${item.senderName}`}/>
+                                                <div className='ml-2'>
+                                                    <div className='ml-1 text-sm mb-1'>{item.senderName}</div>
+                                                    <div className='max-w-[300px] bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light'>{item.content}</div>
+                                                    {chatData[i].likes && chatData[i].likes.length > 0 ? 
+                                                        <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
+                                                            <div className='flex '>
+                                                                <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3'/> 
+                                                                <Avatar className='!w-[1.5rem] !h-[1.5rem]' src={avatarLinks[item.avatar]} />
+                                                            </div>
+                                                        </div> 
+                                                    : null}
+                                                </div>
+                                            </div>
+                                            <div className='relative h-min bg-white shadow-lg rounded px-2 pt-2 pb-1 left-2 hidden' id={i}>
+                                                <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3' onClick={()=>{onLike(i)}} />
+                                                <IconDislikeThumb className='!text-blue-400 hover:scale-[1.2] cursor-pointer !text-xl' />
                                             </div>
                                         </div>
-                                        <div className='relative h-min bg-white shadow-lg rounded px-2 pt-2 pb-1 left-2 hidden' id={i}>
-                                            <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3' onClick={()=>{onLike(i)}} />
-                                            <IconDislikeThumb className='!text-blue-400 hover:scale-[1.2] cursor-pointer !text-xl' />
-                                        </div>
-                                    </div>
-                                ) :
-                                (
-                                    <div key={i} className='px-12 py-4 flex w-full justify-end' onMouseOver={()=>{changeContextShow(i, "block")}} onMouseOut={()=>{changeContextShow(i, "none")}}>
-                                        <div className='relative h-min bg-white shadow-lg rounded px-2 pt-2 pb-1 right-2 hidden' id={i}>
-                                            <IconEdit className='hover:scale-[1.2] cursor-pointer !text-xl mr-3' onClick={()=>{editMessage(i)}} />
-                                            <IconDelete className='!text-blue-400 hover:scale-[1.2] cursor-pointer !text-xl' onClick ={()=>{deleteMessage(i)}} />
-                                            <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3' onClick={()=>{onLike(i)}} />
-                                        </div>
-                                        <div className='flex'>
-                                            
-                                            {item.check ?<div className='flex flex-col flex-col-reverse'>
-                                            <IconCheckboxTick />
-                                            </div> :  null}
-                                            <div className='mr-2 w-max items-edn'>
-                                                <div className='ml-1 text-sm mb-1 text-right'>{item.senderName}</div>
-                                                <div id={i+"m"} className='max-w-[300px] bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light w-max'>{item.content}</div>
-                                                {chatData[i].likes && chatData[i].likes.length > 0 ? 
-                                                    <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
-                                                        <div className='flex '>
-                                                            <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3' /> 
-                                                            <Avatar className='!w-[1.5rem] !h-[1.5rem]' src={avatarLinks[item.avatar]} />
-                                                        </div>
-                                                    </div> 
-                                                : null}
+                                    ) :
+                                    (
+                                        <div key={i} className='px-12 py-4 flex w-full justify-end' onMouseOver={()=>{changeContextShow(i, "block")}} onMouseOut={()=>{changeContextShow(i, "none")}}>
+                                            <div className='relative h-min bg-white shadow-lg rounded px-2 pt-2 pb-1 right-2 hidden' id={i}>
+                                                <IconEdit className='hover:scale-[1.2] cursor-pointer !text-xl mr-3' onClick={()=>{editMessage(i)}} />
+                                                <IconDelete className='!text-blue-400 hover:scale-[1.2] cursor-pointer !text-xl' onClick ={()=>{deleteMessage(i)}} />
+                                                <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3' onClick={()=>{onLike(i)}} />
                                             </div>
-                                            <Avatar src={avatarLinks[item.avatar]} onClick={()=>window.location.href=`/profile/${item.senderName}`}  />
+                                            <div className='flex'>
+                                                
+                                                {item.check ?<div className='flex flex-col flex-col-reverse'>
+                                                <IconCheckboxTick />
+                                                </div> :  null}
+                                                <div className='mr-2 w-max items-edn'>
+                                                    <div className='ml-1 text-sm mb-1 text-right'>{item.senderName}</div>
+                                                    <div id={i+"m"} className='max-w-[300px] bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light w-max'>{item.content}</div>
+                                                    {chatData[i].likes && chatData[i].likes.length > 0 ? 
+                                                        <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
+                                                            <div className='flex '>
+                                                                <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3' /> 
+                                                                <Avatar className='!w-[1.5rem] !h-[1.5rem]' src={avatarLinks[item.avatar]} />
+                                                            </div>
+                                                        </div> 
+                                                    : null}
+                                                </div>
+                                                <Avatar src={avatarLinks[item.avatar]} onClick={()=>window.location.href=`/profile/${item.senderName}`}  />
+                                            </div>
                                         </div>
-                                    </div>
-                                )
+                                    )
+                                }
+                                else{
+                                    return item.senderName !== username ?
+                                    (
+                                        <div key={i} className='px-12 py-4 flex w-full items-start' onMouseOver={()=>{changeContextShow(i, "block")}} onMouseOut={()=>{changeContextShow(i, "none")}}>
+                                            <div className='flex'>
+                                                <Avatar src={avatarLinks[item.avatar]} onClick={()=>window.location.href=`/profile/${item.senderName}`}/>
+                                                <div className='ml-2'>
+                                                    <div className='ml-1 text-sm mb-1'>{item.senderName}</div>
+                                                    <div className='max-w-[300px] bg-white px-3 pt-1 pb-2 rounded-lg text-sm  text-red-500 font-bold'>{item.content}</div>
+                                                    {chatData[i].likes && chatData[i].likes.length > 0 ? 
+                                                        <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
+                                                            <div className='flex '>
+                                                                <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3'/> 
+                                                                <Avatar className='!w-[1.5rem] !h-[1.5rem]' src={avatarLinks[item.avatar]} />
+                                                            </div>
+                                                        </div> 
+                                                    : null}
+                                                </div>
+                                            </div>
+                                            <div className='relative h-min bg-white shadow-lg rounded px-2 pt-2 pb-1 left-2 hidden' id={i}>
+                                                <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3' onClick={()=>{onLike(i)}} />
+                                                <IconDislikeThumb className='!text-blue-400 hover:scale-[1.2] cursor-pointer !text-xl' />
+                                            </div>
+                                        </div>
+                                    ) :
+                                    (
+                                        <div key={i} className='px-12 py-4 flex w-full justify-end' onMouseOver={()=>{changeContextShow(i, "block")}} onMouseOut={()=>{changeContextShow(i, "none")}}>
+                                            <div className='relative h-min bg-white shadow-lg rounded px-2 pt-2 pb-1 right-2 hidden' id={i}>
+                                                <IconEdit className='hover:scale-[1.2] cursor-pointer !text-xl mr-3' onClick={()=>{editMessage(i)}} />
+                                                <IconDelete className='!text-blue-400 hover:scale-[1.2] cursor-pointer !text-xl' onClick ={()=>{deleteMessage(i)}} />
+                                                <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3' onClick={()=>{onLike(i)}} />
+                                            </div>
+                                            <div className='flex'>
+                                                
+                                                {item.check ?<div className='flex flex-col flex-col-reverse'>
+                                                <IconCheckboxTick />
+                                                </div> :  null}
+                                                <div className='mr-2 w-max items-edn'>
+                                                    <div className='ml-1 text-sm mb-1 text-right'>{item.senderName}</div>
+                                                    <div id={i+"m"} className='max-w-[300px] bg-white px-3 pt-1 pb-2 rounded-lg text-sm  w-max text-red-500 font-bold'>{item.content}</div>
+                                                    {chatData[i].likes && chatData[i].likes.length > 0 ? 
+                                                        <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
+                                                            <div className='flex '>
+                                                                <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3' /> 
+                                                                <Avatar className='!w-[1.5rem] !h-[1.5rem]' src={avatarLinks[item.avatar]} />
+                                                            </div>
+                                                        </div> 
+                                                    : null}
+                                                </div>
+                                                <Avatar src={avatarLinks[item.avatar]} onClick={()=>window.location.href=`/profile/${item.senderName}`}  />
+                                            </div>
+                                        </div>
+                                    )
+                                }
+                                
                             })}
                         </div>
                         <div className='fixed w-full rounded-sm border h-[7vh] bottom-0 flex items-center px-6 py-2'>
