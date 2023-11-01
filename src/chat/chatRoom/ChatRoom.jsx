@@ -23,6 +23,8 @@ export default function ChatRoom(params) {
     const username = docCookies.getItem("username");
     const [adminStatus, setAdminStatus] = useState(false);
     const [emojiPanel, setEmojiPanel] = useState(false);
+    const [userData, setUserData] = useState(null);
+
     const connection = useRef(null)
     const scrollRef = useRef(null);
     const base = "https://dg76-comp504-chat-api-0a154efee1fc.herokuapp.com"
@@ -33,7 +35,17 @@ export default function ChatRoom(params) {
         el.scrollTop = el.scrollHeight;
         }
     };
-
+    const getUserInfo = () => {
+        fetch(base+`/user/${username}`, {method:"GET"}).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            if (data) {
+                setUserData(data);
+            }
+        });
+    }
     const change = () => {
         setVisible(!visible);
     };
@@ -77,8 +89,17 @@ export default function ChatRoom(params) {
 
     const onLike = (i) => {
         let temp = chatData;
-        temp[i].likes.push("like");
-        setChatData(temp);
+        let obj = {username:username,avatar:userData.avatar}
+        let bol = true;
+        for(const like of temp[i].likes){
+            if(like.username === obj.username && like.avatar === obj.avatar){
+                bol = false;
+            }
+        }
+        if(bol){
+            temp[i].likes.push({username:username,avatar:userData.avatar});
+            setChatData(temp);
+        }
         fetch(base+`/chatroom/message/reaction/${temp[i].msgID}`, {method:"POST", body: JSON.stringify({
             username: username,
             roomName: roomName,
@@ -181,6 +202,7 @@ export default function ChatRoom(params) {
     useEffect(() => {
         getRoomDetails();
         getChatHistory();
+        getUserInfo();
         if(connection.current===null){
             createSocketConnection()
         }
@@ -249,7 +271,9 @@ export default function ChatRoom(params) {
                                                         <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
                                                             <div className='flex justify-between'>
                                                                 <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3'/> 
-                                                                <Avatar className='!w-[1.5rem] !h-[1.5rem]' src={avatarLinks[item.avatar]} />
+                                                                {chatData[i].likes.map((item1,i1) => {
+                                                                    return <Avatar className='!w-[1.5rem] !h-[1.5rem]' src={avatarLinks[item1.avatar]} />
+                                                                })}
                                                             </div>
                                                         </div> 
                                                     : null}
@@ -312,7 +336,9 @@ export default function ChatRoom(params) {
                                                         <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
                                                             <div className='flex '>
                                                                 <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3'/> 
-                                                                <Avatar className='!w-[1.5rem] !h-[1.5rem]' src={avatarLinks[item.avatar]} />
+                                                                {chatData[i].likes.map((item1,i1) => {
+                                                                    return <Avatar className='!w-[1.5rem] !h-[1.5rem]' src={avatarLinks[item1.avatar]} />
+                                                                })}
                                                             </div>
                                                         </div> 
                                                     : null}
