@@ -8,9 +8,10 @@ export default function ChatIndex(params) {
     const username = docCookies.getItem("username");
 
     const [chatList, setChatList] = useState(undefined);
+    const base = "https://dg76-comp504-chat-api-0a154efee1fc.herokuapp.com"
 
     const getChatList = () => {
-        fetch(`/list/chatrooms/${username}`, {method: "GET"}).then(res => {
+        fetch(base+`/list/chatrooms/${username}`, {method: "GET"}).then(res => {
             if(res.status === 200){
                 return res.json();
             }

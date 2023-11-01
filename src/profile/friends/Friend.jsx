@@ -6,9 +6,10 @@ import { avatarLinks } from '../../components/avatar';
 export default function Friends(params) {
     const [friendList, setFriendList] = useState([]);
     const {displayMute, displayAdd} = params;
+    const base = "https://dg76-comp504-chat-api-0a154efee1fc.herokuapp.com"
 
     const getFriendList = () => {
-        fetch(`/user/friendsAll/${docCookies.getItem("username")}`, {method:"GET"}).then(res => {
+        fetch(base+`/user/friendsAll/${docCookies.getItem("username")}`, {method:"GET"}).then(res => {
             if (res.status === 200) {
                 return res.json();
             }

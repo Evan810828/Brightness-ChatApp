@@ -8,9 +8,10 @@ export default function Social() {
     const [joinedRoomlist, setJoinedRoomlist] = useState([]);
 
     const username = docCookies.getItem("username");
+    const base = "https://dg76-comp504-chat-api-0a154efee1fc.herokuapp.com"
 
     const getRoomlist = () => {
-        fetch("/list/chatrooms", {method: 'GET'}).then(res => {
+        fetch(base+"/list/chatrooms", {method: 'GET'}).then(res => {
             if (res.status === 200) {
                 return res.json();
             }
@@ -24,7 +25,7 @@ export default function Social() {
     }
 
     const getJoinedRoomlist = () => {
-        fetch(`/chatrooms/${username}`, {method: 'GET'}).then(res => {
+        fetch(base+`/chatrooms/${username}`, {method: 'GET'}).then(res => {
             if (res.status === 200) {
                 return res.json();
             }
@@ -37,7 +38,7 @@ export default function Social() {
     }
 
     const joinRoom = (roomName) => {
-        fetch(`/chatroom/join`, {method:"POST",
+        fetch(base+`/chatroom/join`, {method:"POST",
             body: JSON.stringify({
                 roomName: roomName,
                 username: username

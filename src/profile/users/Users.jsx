@@ -8,8 +8,10 @@ export default function Users(params) {
     const [friendList, setFriendList] = useState([]);
     const {displayMute, displayAdd,username} = params;
     const [userList, setuserList] = useState([]);
+    const base = "https://dg76-comp504-chat-api-0a154efee1fc.herokuapp.com"
+
     const getUserList = () => {
-        fetch(`/users/usersAll/${username}`, {method:"GET"}).then(res => {
+        fetch(base+`/users/usersAll/${username}`, {method:"GET"}).then(res => {
             if (res.status === 200) {
                 return res.json();
             }
@@ -21,7 +23,7 @@ export default function Users(params) {
     }
 
     const getFriendList = () => {
-        fetch(`/user/friends/${docCookies.getItem("username")}`, {method:"GET"}).then(res => {
+        fetch(base+`/user/friends/${docCookies.getItem("username")}`, {method:"GET"}).then(res => {
             if (res.status === 200) {
                 return res.json();
             }
@@ -39,7 +41,7 @@ export default function Users(params) {
     }, []);
 
     const addFriend = () => {
-        fetch(`/user/friends/invite`, {method:"POST",
+        fetch(base+`/user/friends/invite`, {method:"POST",
             body: JSON.stringify({
                 username: username,
                 senderUsername: docCookies.getItem("username")

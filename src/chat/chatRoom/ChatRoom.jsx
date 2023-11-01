@@ -114,6 +114,7 @@ export default function ChatRoom(params) {
     const username = docCookies.getItem("username");
     const connection = useRef(null)
     const scrollRef = useRef(null);
+    const base = "https://dg76-comp504-chat-api-0a154efee1fc.herokuapp.com"
 
     const scrollToBottom = () => {
         const el = scrollRef.current;
@@ -137,7 +138,7 @@ export default function ChatRoom(params) {
         setEditIndex(i);
     }
     const deleteMessage = (i) => {
-        fetch(`/chatroom/message/${roomName}_${chatData[i].msgID}`, {method:"DELETE"}).then(res => {
+        fetch(base+`/chatroom/message/${roomName}_${chatData[i].msgID}`, {method:"DELETE"}).then(res => {
             if (res.status === 200) {
                 return res.json();
             }
@@ -153,7 +154,7 @@ export default function ChatRoom(params) {
         let temp = chatData;
         temp[editIndex].content = inputValue;
         setChatData(temp);
-        fetch(`/chatroom/message/${temp[editIndex].msgID}`, {method:"POST", body: JSON.stringify({
+        fetch(base+`/chatroom/message/${temp[editIndex].msgID}`, {method:"POST", body: JSON.stringify({
             roomName: roomName,
             message: inputValue
           })
@@ -167,7 +168,7 @@ export default function ChatRoom(params) {
         let temp = chatData;
         temp[i].likes.push("like");
         setChatData(temp);
-        fetch(`/chatroom/message/reaction/${temp[i].msgID}`, {method:"POST", body: JSON.stringify({
+        fetch(base+`/chatroom/message/reaction/${temp[i].msgID}`, {method:"POST", body: JSON.stringify({
             username: username,
             roomName: roomName,
             reactionType: "like"
@@ -177,7 +178,7 @@ export default function ChatRoom(params) {
     }
 
     const getRoomDetails = () => {
-        fetch(`/chatroom/details/${roomName}`, {method:"GET"}).then(res => {
+        fetch(base+`/chatroom/details/${roomName}`, {method:"GET"}).then(res => {
             if (res.status === 200) {
                 return res.json();
             }
@@ -189,7 +190,7 @@ export default function ChatRoom(params) {
     }
 
     const getChatHistory = () => {
-        fetch(`/list/chatroom/message/${roomName}/${username}`, {method:"GET"}).then(res => {
+        fetch(base+`/list/chatroom/message/${roomName}/${username}`, {method:"GET"}).then(res => {
             if (res.status === 200) {
                 return res.json();
             }
@@ -204,7 +205,7 @@ export default function ChatRoom(params) {
 
     let sendMessage = () => {
         connection.current.send(inputValue)
-        fetch(`/chatroom/message`, {method:"POST", body: JSON.stringify({
+        fetch(base+`/chatroom/message`, {method:"POST", body: JSON.stringify({
             username: username,
             roomName: roomName,
             message: inputValue

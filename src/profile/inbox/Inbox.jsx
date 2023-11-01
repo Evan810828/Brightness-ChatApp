@@ -43,9 +43,10 @@ const messages = [
 export default function Inbox() {
     const [roomInvitations, setRoomInvitations] = useState([]);
     const [userInvitations, setUserInvitations] = useState([]);
+    const base = "https://dg76-comp504-chat-api-0a154efee1fc.herokuapp.com"
 
     const getMessages = () => {
-        fetch(`/invitations/${docCookies.getItem("username")}`, {method:"GET"}).then(res => {
+        fetch(base+`/invitations/${docCookies.getItem("username")}`, {method:"GET"}).then(res => {
             if (res.status === 200) {
                 return res.json();
             }
@@ -58,7 +59,7 @@ export default function Inbox() {
     }
 
     const acceptRoomInvitation = (roomName) => {
-        fetch(`/chatroom/accept/${roomName}`, {method:"POST", body: JSON.stringify({
+        fetch(base+`/chatroom/accept/${roomName}`, {method:"POST", body: JSON.stringify({
             username: docCookies.getItem("username"),
         })}).then(res => {
             if (res.status === 200) {
@@ -73,7 +74,7 @@ export default function Inbox() {
     }
 
     const declineRoomInvitation = (roomName) => {
-        fetch(`/chatroom/decline/${roomName}`, {method:"POST", body: JSON.stringify({
+        fetch(base+`/chatroom/decline/${roomName}`, {method:"POST", body: JSON.stringify({
             username: docCookies.getItem("username"),
         })}).then(res => {
             if (res.status === 200) {
@@ -88,7 +89,7 @@ export default function Inbox() {
     }
 
     const acceptUserInvitation = (username) => {
-        fetch(`/user/friends/accept`, {method:"POST", body: JSON.stringify({
+        fetch(base+`/user/friends/accept`, {method:"POST", body: JSON.stringify({
             username: docCookies.getItem("username"),
             senderUsername: username
           })
@@ -104,7 +105,7 @@ export default function Inbox() {
     }
 
     const declineUserInvitation = (username) => {
-        fetch(`/user/friends/decline`, {method:"POST", body: JSON.stringify({
+        fetch(base+`/user/friends/decline`, {method:"POST", body: JSON.stringify({
             username: docCookies.getItem("username"),
             senderUsername: username
           })

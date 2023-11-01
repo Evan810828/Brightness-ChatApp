@@ -12,9 +12,10 @@ export default function My(params) {
     const [description, setDescription] = useState("");
 
     const username = params.username;
+    const base = "https://dg76-comp504-chat-api-0a154efee1fc.herokuapp.com"
 
     const getUserInfo = () => {
-        fetch(`/user/${username}`, {method:"GET"}).then(res => {
+        fetch(base+`/user/${username}`, {method:"GET"}).then(res => {
             if (res.status === 200) {
                 return res.json();
             }
@@ -26,7 +27,7 @@ export default function My(params) {
     }
 
     const updateUserInfo = () => {
-        fetch(`/user/setInfo`, {method:"POST",body: JSON.stringify({
+        fetch(base+`/user/setInfo`, {method:"POST",body: JSON.stringify({
             userName: username,
             newSchool: school,
             newInterests: interests.replace(/\s/g, '').split(','),

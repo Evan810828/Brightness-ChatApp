@@ -24,9 +24,10 @@ const indexItem = [
 ]
 
 export default function Header() {
+    const base = "https://dg76-comp504-chat-api-0a154efee1fc.herokuapp.com"
 
     const logout = () => {
-        fetch(`/user/setActive`, {method:"POST", body: JSON.stringify({
+        fetch(base+`/user/setActive`, {method:"POST", body: JSON.stringify({
             username: docCookies.getItem("username"),
             activeStatus: false
           })

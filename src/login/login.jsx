@@ -5,6 +5,7 @@ import { docCookies } from '../components/header/cookie';
 export default function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const base = "https://dg76-comp504-chat-api-0a154efee1fc.herokuapp.com"
 
     document.onkeydown = function (event_e){
         if(window.event){
@@ -21,7 +22,7 @@ export default function Login() {
             Toast.error("Username or password cannot be empty!");
             return;
         }
-        fetch("/login", {
+        fetch(base+"/login", {
             method: 'POST',
             body: JSON.stringify({
                 "username": username,

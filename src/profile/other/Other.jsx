@@ -9,9 +9,10 @@ export default function Other(params) {
     const [userData, setUserData] = useState(null);
 
     const username = params.username;
+    const base = "https://dg76-comp504-chat-api-0a154efee1fc.herokuapp.com"
 
     const getUserInfo = () => {
-        fetch(`/user/${username}`, {method:"GET"}).then(res => {
+        fetch(base+`/user/${username}`, {method:"GET"}).then(res => {
             if (res.status === 200) {
                 return res.json();
             }
@@ -23,7 +24,7 @@ export default function Other(params) {
     }
 
     const addFriend = () => {
-        fetch(`/user/friends/invite`, {method:"POST",
+        fetch(base+`/user/friends/invite`, {method:"POST",
             body: JSON.stringify({
                 username: username,
                 senderUsername: docCookies.getItem("username")
@@ -44,7 +45,7 @@ export default function Other(params) {
     const [friendList, setFriendList] = useState([]);
 
     const getFriendList = () => {
-        fetch(`/user/friends/${docCookies.getItem("username")}`, {method:"GET"}).then(res => {
+        fetch(base+`/user/friends/${docCookies.getItem("username")}`, {method:"GET"}).then(res => {
             if (res.status === 200) {
                 return res.json();
             }
