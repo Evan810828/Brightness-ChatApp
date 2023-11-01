@@ -1,6 +1,9 @@
 export function formatTimestamp(timestamp) {
     const date = new Date(timestamp);
     const now = new Date();
+
+    // add 5 hours to now
+    now.setHours(now.getHours() + 5);
   
     const secondsAgo = Math.floor((now - date) / 1000);
     const minutesAgo = Math.floor(secondsAgo / 60);

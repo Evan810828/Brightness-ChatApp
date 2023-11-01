@@ -175,6 +175,7 @@ export default function ChatRoom(params) {
 
     const handleEmojiClick = (emoji) => {
         setInputValue(inputValue=>(inputValue + emoji))
+        setEmojiPanel(false)
     }
 
     useEffect(() => {
@@ -255,37 +256,40 @@ export default function ChatRoom(params) {
                                                 </div>
                                             </div>
                                             <div className='relative h-min bg-white shadow-lg rounded px-2 pt-2 pb-1 left-2 hidden' id={i}>
-                                                <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3' onClick={()=>{onLike(i)}} />
-                                                {adminStatus&&<IconDelete className='!text-blue-400 hover:scale-[1.2] cursor-pointer !text-xl' onClick ={()=>{deleteMessage(i)}} />}
+                                                <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl' onClick={()=>{onLike(i)}} />
+                                                {adminStatus&&<IconDelete className='!text-blue-400 hover:scale-[1.2] cursor-pointer !text-xl ml-3' onClick ={()=>{deleteMessage(i)}} />}
                                             </div>
                                         </div>
                                     ) :
                                     (
                                         <div key={i} className='px-12 py-4 flex w-full justify-end' onMouseOver={()=>{changeContextShow(i, "block")}} onMouseOut={()=>{changeContextShow(i, "none")}}>
                                             <div className='relative h-min bg-white shadow-lg rounded px-2 pt-2 pb-1 right-2 hidden' id={i}>
-                                                <IconEdit className='hover:scale-[1.2] cursor-pointer !text-xl mr-3' onClick={()=>{editMessage(i)}} />
-                                                {adminStatus&&<IconDelete className='!text-blue-400 hover:scale-[1.2] cursor-pointer !text-xl' onClick ={()=>{deleteMessage(i)}} />}
-                                                <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3' onClick={()=>{onLike(i)}} />
+                                                <IconEdit className='hover:scale-[1.2] cursor-pointer !text-xl' onClick={()=>{editMessage(i)}} />
+                                                <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl ml-3' onClick={()=>{onLike(i)}} />
+                                                {adminStatus&&<IconDelete className='!text-blue-400 hover:scale-[1.2] cursor-pointer !text-xl ml-3' onClick ={()=>{deleteMessage(i)}} />}
                                             </div>
                                             <div className='flex'>
-                                                
-                                                {item.check ?<div className='flex flex-col flex-col-reverse'>
-                                                <IconCheckboxTick />
-                                                </div> :  null}
                                                 <div className='mr-2 w-max items-edn'>
                                                     <div className='flex '>
                                                         <div className='ml-1 text-slate-400 text-sm'>{formatTimestamp(item.timestamp)}</div>
                                                         <div className='ml-3 text-sm mb-1'>{item.senderName}</div>
                                                     </div>
-                                                    <div id={i+"m"} className='max-w-[300px] bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light w-max'>{replaceURLs(item.content)}</div>
-                                                    {chatData[i].likes && chatData[i].likes.length > 0 ? 
-                                                        <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
-                                                            <div className='flex '>
-                                                                <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3' /> 
-                                                                <Avatar className='!w-[1.5rem] !h-[1.5rem]' src={avatarLinks[item.avatar]} />
-                                                            </div>
-                                                        </div> 
-                                                    : null}
+                                                    <div className='w-full flex justify-end'>
+                                                        {item.check ?<div className='flex flex-col flex-col-reverse'>
+                                                            <IconCheckboxTick />
+                                                        </div> :  null}
+                                                        <div id={i+"m"} className='max-w-[300px] bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light w-max'>{replaceURLs(item.content)}</div>
+                                                    </div>
+                                                    <div className='w-full flex justify-end'>
+                                                        {chatData[i].likes && chatData[i].likes.length > 0 ? 
+                                                            <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
+                                                                <div className='flex '>
+                                                                    <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3' /> 
+                                                                    <Avatar className='!w-[1.5rem] !h-[1.5rem]' src={avatarLinks[item.avatar]} />
+                                                                </div>
+                                                            </div> 
+                                                        : null}
+                                                    </div>
                                                 </div>
                                                 <Avatar src={avatarLinks[item.avatar]} onClick={()=>window.location.href=`/profile/${item.senderName}`}  />
                                             </div>
@@ -316,36 +320,39 @@ export default function ChatRoom(params) {
                                             </div>
                                             <div className='relative h-min bg-white shadow-lg rounded px-2 pt-2 pb-1 left-2 hidden' id={i}>
                                                 <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3' onClick={()=>{onLike(i)}} />
-                                                <IconDislikeThumb className='!text-blue-400 hover:scale-[1.2] cursor-pointer !text-xl' />
+                                                {adminStatus&&<IconDelete className='!text-blue-400 hover:scale-[1.2] cursor-pointer !text-xl' onClick ={()=>{deleteMessage(i)}} />}
                                             </div>
                                         </div>
                                     ) :
                                     (
                                         <div key={i} className='px-12 py-4 flex w-full justify-end' onMouseOver={()=>{changeContextShow(i, "block")}} onMouseOut={()=>{changeContextShow(i, "none")}}>
                                             <div className='relative h-min bg-white shadow-lg rounded px-2 pt-2 pb-1 right-2 hidden' id={i}>
-                                                <IconEdit className='hover:scale-[1.2] cursor-pointer !text-xl mr-3' onClick={()=>{editMessage(i)}} />
-                                                <IconDelete className='!text-blue-400 hover:scale-[1.2] cursor-pointer !text-xl' onClick ={()=>{deleteMessage(i)}} />
-                                                <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3' onClick={()=>{onLike(i)}} />
+                                                <IconEdit className='hover:scale-[1.2] cursor-pointer !text-xl' onClick={()=>{editMessage(i)}} />
+                                                {adminStatus&&<IconDelete className='!text-blue-400 hover:scale-[1.2] cursor-pointer !text-xl ml-3' onClick ={()=>{deleteMessage(i)}} />}
+                                                <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl ml-3' onClick={()=>{onLike(i)}} />
                                             </div>
                                             <div className='flex'>
-                                                
-                                                {item.check ?<div className='flex flex-col flex-col-reverse'>
-                                                <IconCheckboxTick />
-                                                </div> :  null}
                                                 <div className='mr-2 w-max items-edn'>
-                                                    <div className='flex '>
+                                                    <div className='flex w-full justify-end'>
                                                         <div className='ml-1 text-slate-400 text-sm'>{formatTimestamp(item.timestamp)}</div>
                                                         <div className='ml-3 text-sm mb-1'>{item.senderName}</div>
                                                     </div>
-                                                    <div id={i+"m"} className='max-w-[300px] bg-white px-3 pt-1 pb-2 rounded-lg text-sm  w-max text-red-500 font-bold'>{replaceURLs(item.content)}</div>
-                                                    {chatData[i].likes && chatData[i].likes.length > 0 ? 
-                                                        <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
-                                                            <div className='flex '>
-                                                                <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3' /> 
-                                                                <Avatar className='!w-[1.5rem] !h-[1.5rem]' src={avatarLinks[item.avatar]} />
-                                                            </div>
-                                                        </div> 
-                                                    : null}
+                                                    <div className='w-full flex justify-end'>
+                                                        {item.check ?<div className='flex flex-col flex-col-reverse'>
+                                                            <IconCheckboxTick />
+                                                        </div> :  null}
+                                                        <div id={i+"m"} className='max-w-[300px] bg-white px-3 pt-1 pb-2 rounded-lg text-sm  w-max text-red-500 font-bold'>{replaceURLs(item.content)}</div>
+                                                    </div>
+                                                    <div className='w-full flex justify-end'>
+                                                        {chatData[i].likes && chatData[i].likes.length > 0 ? 
+                                                            <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
+                                                                <div className='flex '>
+                                                                    <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3' /> 
+                                                                    <Avatar className='!w-[1.5rem] !h-[1.5rem]' src={avatarLinks[item.avatar]} />
+                                                                </div>
+                                                            </div> 
+                                                        : null}
+                                                    </div>
                                                 </div>
                                                 <Avatar src={avatarLinks[item.avatar]} onClick={()=>window.location.href=`/profile/${item.senderName}`}  />
                                             </div>
