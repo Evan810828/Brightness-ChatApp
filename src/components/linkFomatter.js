@@ -1,7 +1,15 @@
-export function replaceURLs(str) {
-    if(str){
-        const regex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gim;
-        return str.replace(regex, '<a href="$1" target="_blank">$1</a>');
-    }
-}
+export function replaceURLs(text) {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.split(urlRegex).map((part, index) => {
+      if (part.match(urlRegex)) {
+        return (
+          <a key={index} href={part} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
+            {part}
+          </a>
+        );
+      } else {
+        return part;
+      }
+    });
+  }
   
