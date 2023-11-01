@@ -5,103 +5,11 @@ import React, { useEffect, useState,useRef  } from 'react';
 import Admin from './admin';
 import { avatarLinks } from "../../components/avatar";
 import { replaceURLs } from "../../components/linkFomatter";
-
-let data = [
-    {
-        senderName: "Akutar Banana",
-        avatar: 'https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp',
-        message: "Hey, did you attend Prof. Mack's lecture today?",
-        time: "Yesterday",
-        reactList: [],
-    },
-    {
-        senderName: "Mark",
-        avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTj_UkBWZBjd-K5TxEQuPAUd6Gj7BKFBsR49A&usqp=CAU',
-        content: "Not today, unfortunately. Had a meeting.",
-        time: "Yesterday",
-        yours: false,
-        reactList: [],
-    },
-    {
-        senderName: "Anna",
-        avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-3H6IHZNPQv3QBicSDtkTtsErOzQj1NrZNw&usqp=CAU',
-        content: "You guys missed out. It was really interesting!",
-        time: "Yesterday",
-        reactList: [],
-    },
-    {
-        senderName: "Akutar Banana",
-        avatar: 'https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp',
-        content: <p>Don't worry, I got the link for the recording! 
-            <a className='hover:underline text-blue-500 cursor-pointer hover:underline-offset-2 ml-1' href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'>
-                https://www.youtube.com/watch?v=dQw4w9WgXcQ
-            </a></p>,
-        time: "Yesterday",
-        reactList: [],
-    },
-    {
-        senderName: "Mark",
-        avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTj_UkBWZBjd-K5TxEQuPAUd6Gj7BKFBsR49A&usqp=CAU',
-        content: "Bummer. Could you share the notes?",
-        time: "Yesterday",
-        reactList: [],
-    },
-    {
-        senderName: "Lucy",
-        avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXM5VoIfvhRC2p7byLim5MD2WNIYW949cEIg&usqp=CAU',
-        content: "I have the notes. I'll share them with you both.",
-        time: "Yesterday",
-        yours: false,
-        reactList: [],
-    },
-    {
-        senderName: "Mark",
-        avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTj_UkBWZBjd-K5TxEQuPAUd6Gj7BKFBsR49A&usqp=CAU',
-        content: "Thanks, Lucy!",
-        time: "Yesterday",
-        reactList: [],
-    },
-    {
-        senderName: "Sophie",
-        avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9wvt48MJrdhdoESZm1YX_N9ext4H4IxE0uA&usqp=CAU',
-        content: "Anyone attending the rock concert tonight?",
-        time: "Yesterday",
-        yours: false,
-        reactList: [],
-    },
-    {
-        senderName: "Isabella",
-        avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQK2sdSvFkSyfHsmwmhC4uAYymBGFYTsY4i4A&usqp=CAU',
-        content: "I am! Excited for it.",
-        time: "Yesterday",
-        reactList: [],
-    },
-    {
-        senderName: "Akutar Banana",
-        avatar: 'https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp',
-        content: "Count me in too!",
-        time: "Yesterday",
-        reactList: [],
-    },
-    {
-        senderName: "Emma",
-        avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuFzAIR675Zc4LuhA3P2bVCgE6zKcgJIu50Q&usqp=CAU',
-        content: "I wish I could, but I have a prior commitment.",
-        time: "Yesterday",
-        reactList: [],
-    },
-    {
-        senderName: "Akutar Banana",
-        avatar: 'https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp',
-        content: "No worries, Emma. Next time!",
-        time: "Yesterday",
-        reactList: [],
-    }
-];
+import EmojiPanel from '../../components/emoji';
 
 export default function ChatRoom(params) {
     const [timer, setTimer] = useState(0);
-    const [chatData, setChatData] = useState(data);
+    const [chatData, setChatData] = useState([]);
     const [visible, setVisible] = useState(true);
     const [inputValue, setInputValue] = useState("");
     const [mode, setMode] = useState("message");
@@ -112,6 +20,8 @@ export default function ChatRoom(params) {
     const [lastMessage,setLastMessage] = useState();
     const roomName = window.location.pathname.split('/')[1];
     const username = docCookies.getItem("username");
+    const [adminStatus, setAdminStatus] = useState(false);
+    const [emojiPanel, setEmojiPanel] = useState(false);
     const connection = useRef(null)
     const scrollRef = useRef(null);
 
@@ -195,9 +105,7 @@ export default function ChatRoom(params) {
             }
         }).then(data => {
             if (data) {
-                console.log(data)
                 setChatData(data.messages)
-                console.log(chatData)
             }
         });
     }
@@ -247,6 +155,29 @@ export default function ChatRoom(params) {
             createSocketConnection()
         }
     }
+    
+    const getAdminStatus = () => {
+        if(roomDetails){
+            fetch(`/chatroom/admin/${roomDetails.roomName}`, {method:"GET"}).then(res => {
+                if (res.status === 200) {
+                    return res.json();
+                }
+            }).then(data => {
+                if (data) {
+                    if(data.username === docCookies.getItem("username")){
+                        setAdminStatus(true);
+                        console.log(data.username);
+                    } else {
+                        setAdminStatus(false);
+                    }
+                }
+            });
+        }
+    }
+
+    const handleEmojiClick = (emoji) => {
+        setInputValue(inputValue=>(inputValue + emoji))
+    }
 
     useEffect(() => {
         getRoomDetails();
@@ -263,6 +194,23 @@ export default function ChatRoom(params) {
     useEffect(() => {
         scrollToBottom();
     }, [chatData]); 
+
+    useEffect(() => {
+        getAdminStatus();
+    }, [roomDetails]);
+
+    
+    document.onkeydown = function (event_e){
+        if(window.event){
+            event_e = window.event;
+        }
+        var int_keycode = event_e.charCode || event_e.keyCode;
+        if(int_keycode == '13'){
+            if (mode === "message") {
+                sendMessage()
+            } else onEdit()
+        }
+    }
 
     return (
         <div  className="flex flex-row w-full h-[100%] pl-3">
@@ -294,10 +242,10 @@ export default function ChatRoom(params) {
                                                 <Avatar src={avatarLinks[item.avatar]} onClick={()=>window.location.href=`/profile/${item.senderName}`}/>
                                                 <div className='ml-2'>
                                                     <div className='ml-1 text-sm mb-1'>{item.senderName}</div>
-                                                    <div className='max-w-[300px] bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light'>{item.content}</div>
+                                                    <div className='max-w-[300px] bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light'>{replaceURLs(item.content)}</div>
                                                     {chatData[i].likes && chatData[i].likes.length > 0 ? 
                                                         <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
-                                                            <div className='flex '>
+                                                            <div className='flex justify-between'>
                                                                 <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3'/> 
                                                                 <Avatar className='!w-[1.5rem] !h-[1.5rem]' src={avatarLinks[item.avatar]} />
                                                             </div>
@@ -307,7 +255,7 @@ export default function ChatRoom(params) {
                                             </div>
                                             <div className='relative h-min bg-white shadow-lg rounded px-2 pt-2 pb-1 left-2 hidden' id={i}>
                                                 <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3' onClick={()=>{onLike(i)}} />
-                                                <IconDislikeThumb className='!text-blue-400 hover:scale-[1.2] cursor-pointer !text-xl' />
+                                                {adminStatus&&<IconDelete className='!text-blue-400 hover:scale-[1.2] cursor-pointer !text-xl' onClick ={()=>{deleteMessage(i)}} />}
                                             </div>
                                         </div>
                                     ) :
@@ -315,7 +263,7 @@ export default function ChatRoom(params) {
                                         <div key={i} className='px-12 py-4 flex w-full justify-end' onMouseOver={()=>{changeContextShow(i, "block")}} onMouseOut={()=>{changeContextShow(i, "none")}}>
                                             <div className='relative h-min bg-white shadow-lg rounded px-2 pt-2 pb-1 right-2 hidden' id={i}>
                                                 <IconEdit className='hover:scale-[1.2] cursor-pointer !text-xl mr-3' onClick={()=>{editMessage(i)}} />
-                                                <IconDelete className='!text-blue-400 hover:scale-[1.2] cursor-pointer !text-xl' onClick ={()=>{deleteMessage(i)}} />
+                                                {adminStatus&&<IconDelete className='!text-blue-400 hover:scale-[1.2] cursor-pointer !text-xl' onClick ={()=>{deleteMessage(i)}} />}
                                                 <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3' onClick={()=>{onLike(i)}} />
                                             </div>
                                             <div className='flex'>
@@ -399,7 +347,12 @@ export default function ChatRoom(params) {
                         </div>
                         <div className='fixed w-full rounded-sm border h-[7vh] bottom-0 flex items-center px-6 py-2'>
                             <div className='w-16 h-10 rounded-lg hover:bg-slate-100 h-full flex items-center justify-center mr-2'>
-                                <IconEmoji className='text-yellow-300 !text-xl' />
+                                {emojiPanel&&
+                                    <div className='absolute bottom-12'>
+                                        <EmojiPanel handleEmojiClick={handleEmojiClick} />
+                                    </div>
+                                }
+                                <IconEmoji className='text-yellow-300 !text-xl cursor-pointer' onClick={()=>{setEmojiPanel(!emojiPanel)}} />
                             </div>
                             <div>
                                 <Input value={inputValue} onChange={(e)=>{setInputValue(e)}} className='md:!w-[60vw]' placeholder='Type a message' onMouseOver={null}></Input>

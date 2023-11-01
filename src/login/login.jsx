@@ -1,20 +1,10 @@
 import { Button, Image, Input, Toast } from '@douyinfe/semi-ui';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { docCookies } from '../components/header/cookie';
 
 export default function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-
-    document.onkeydown = function (event_e){
-        if(window.event){
-            event_e = window.event;
-        }
-        var int_keycode = event_e.charCode || event_e.keyCode;
-        if(int_keycode == '13'){
-            handleSubmit();
-        }
-    }
 
     const handleSubmit = () => {
         if (username === '' || password === '') {
@@ -43,6 +33,16 @@ export default function Login() {
             }
         });
     };
+
+    document.onkeydown = function (event_e){
+        if(window.event){
+            event_e = window.event;
+        }
+        var int_keycode = event_e.charCode || event_e.keyCode;
+        if(int_keycode == '13'){
+            handleSubmit();
+        }
+    }
 
     return (
         <div className="min-h-screen flex bg-blue-100 justify-center">

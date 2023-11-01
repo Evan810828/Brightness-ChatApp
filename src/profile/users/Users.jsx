@@ -74,8 +74,8 @@ export default function Users(params) {
                             {displayAdd&&<IconCopyAdd className='text-blue-400 cursor-pointer hover:scale-125 ml-4' size='large' />}
                         </div>
                         {friendList.indexOf(item.username) === -1 ? 
-                        <div className="w-full flex justify-center pt-6">
-                            <div className="flex items-center cursor-pointer hover:bg-blue-500 rounded px-3 py-2 hover:!text-white hover:shadow-lg hover:scale-[1.1]" onClick={addFriend}>
+                        <div className="w-full flex justify-end pt-6">
+                            <div className="flex items-center cursor-pointer hover:bg-blue-500 rounded px-3 py-2 hover:!text-white" onClick={addFriend}>
                                 <IconUserAdd className="!text-2xl mr-3" type="plus-circle" />
                                 Add Friend
                             </div>
