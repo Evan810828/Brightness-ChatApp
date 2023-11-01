@@ -40,10 +40,10 @@ export default function Users(params) {
         getUserList();
     }, []);
 
-    const addFriend = () => {
+    const addFriend = (userName) => {
         fetch(base+`/user/friends/invite`, {method:"POST",
             body: JSON.stringify({
-                username: username,
+                username: userName,
                 senderUsername: docCookies.getItem("username")
               })
         }).then(res => {
@@ -77,7 +77,7 @@ export default function Users(params) {
                         </div>
                         {friendList.indexOf(item.username) === -1 ? 
                         <div className="w-full flex justify-end pt-6">
-                            <div className="flex items-center cursor-pointer hover:bg-blue-500 rounded px-3 py-2 hover:!text-white" onClick={addFriend}>
+                            <div className="flex items-center cursor-pointer hover:bg-blue-500 rounded px-3 py-2 hover:!text-white" onClick={()=>addFriend(item.username)}>
                                 <IconUserAdd className="!text-2xl mr-3" type="plus-circle" />
                                 Add Friend
                             </div>
