@@ -19,7 +19,7 @@ export default function ChatRoom(params) {
     const [messageHistory, setMessageHistory] = useState();
     const [messageUpdated,setMessageUpdated] = useState(true);
     const [lastMessage,setLastMessage] = useState();
-    const roomName = window.location.pathname.split('/')[1];
+    const roomName = window.location.pathname.split('/')[1].replace(/%20/g, " ");
     const username = docCookies.getItem("username");
     const [adminStatus, setAdminStatus] = useState(false);
     const [emojiPanel, setEmojiPanel] = useState(false);
