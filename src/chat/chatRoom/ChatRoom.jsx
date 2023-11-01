@@ -23,6 +23,8 @@ export default function ChatRoom(params) {
     const username = docCookies.getItem("username");
     const [adminStatus, setAdminStatus] = useState(false);
     const [emojiPanel, setEmojiPanel] = useState(false);
+    const [userData, setUserData] = useState(null);
+
     const connection = useRef(null)
     const scrollRef = useRef(null);
     const base = "https://dg76-comp504-chat-api-0a154efee1fc.herokuapp.com"
@@ -33,7 +35,17 @@ export default function ChatRoom(params) {
         el.scrollTop = el.scrollHeight;
         }
     };
-
+    const getUserInfo = () => {
+        fetch(base+`/user/${username}`, {method:"GET"}).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            if (data) {
+                setUserData(data);
+            }
+        });
+    }
     const change = () => {
         setVisible(!visible);
     };
@@ -77,8 +89,17 @@ export default function ChatRoom(params) {
 
     const onLike = (i) => {
         let temp = chatData;
-        temp[i].likes.push("like");
-        setChatData(temp);
+        let obj = {username:username,avatar:userData.avatar}
+        let bol = true;
+        for(const like of temp[i].likes){
+            if(like.username === obj.username && like.avatar === obj.avatar){
+                bol = false;
+            }
+        }
+        if(bol){
+            temp[i].likes.push({username:username,avatar:userData.avatar});
+            setChatData(temp);
+        }
         fetch(base+`/chatroom/message/reaction/${temp[i].msgID}`, {method:"POST", body: JSON.stringify({
             username: username,
             roomName: roomName,
@@ -180,6 +201,7 @@ export default function ChatRoom(params) {
     useEffect(() => {
         getRoomDetails();
         getChatHistory();
+        getUserInfo();
         if(connection.current===null){
             createSocketConnection()
         }
