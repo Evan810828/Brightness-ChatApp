@@ -19,7 +19,6 @@ export default function Social() {
         ).then(data => {
             if (data) {
                 setRoomlist(data.rooms);
-                console.log(data);
             }
         });
     }

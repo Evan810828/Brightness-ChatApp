@@ -128,7 +128,6 @@ export default function ChatRoom(params) {
 
     const updateChat = (messageObject) => {
 
-        console.log(chatData)
         if(messageObject&&messageObject.senderName === username){
             messageObject.check = true;
         }
@@ -138,14 +137,12 @@ export default function ChatRoom(params) {
                messageObject
            ])
        }
-        console.log(chatData)
     }
     
     const createSocketConnection = () => {
         const ws = new WebSocket("wss://dg76-comp504-chat-api-0a154efee1fc.herokuapp.com/chatapp?roomName="+roomName+"&username="+username);
         ws.onopen = (event) => {
             connection.current = ws
-            console.log(connection.current)
         };
         ws.onmessage =  (event) => {
             const json = JSON.parse(event.data);
@@ -167,7 +164,6 @@ export default function ChatRoom(params) {
                 if (data) {
                     if(data.username === docCookies.getItem("username")){
                         setAdminStatus(true);
-                        console.log(data.username);
                     } else {
                         setAdminStatus(false);
                     }

@@ -37,7 +37,6 @@ export default function Header() {
             }
         }).then(data => {
             if (data) {
-                console.log(data);
             }
         });
         docCookies.removeItem("username")

@@ -13,7 +13,6 @@ export default function ChatList(params) {
             <div className='w-full bg-white rounded-xl shadow-xl w-full my-2 mx-3 py-2 px-2'>
                 <div className='h-[89vh] overflow-scroll'>
                     {chatList&& chatList.map((item) => {
-                        console.log(item);
                         return (
                         <div key={item.id} className={`hover:bg-slate-200 rounded-lg px-3 py-2 flex justify-between cursor-pointer mb-2 ${item.roomName === window.location.pathname.slice(1)?'bg-slate-200':''}`}
                             onClick={()=>{window.location.href=`${item.roomName}`}} >

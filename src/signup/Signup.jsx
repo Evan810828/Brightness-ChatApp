@@ -73,7 +73,7 @@ export default function Signup() {
                     </div>
                     <div className='flex items-center mb-4 w-full'>
                         <span className='mr-2 w-[80px]'>Birthday: </span>
-                        <DatePicker className='!w-[300px]' type="date" density="compact" value={birthday} onChange={(date, dateStr)=>{setBirthday(dateStr); console.log(birthday)}}/>
+                        <DatePicker className='!w-[300px]' type="date" density="compact" value={birthday} onChange={(date, dateStr)=>{setBirthday(dateStr);}}/>
                     </div>
                     <div className='flex items-center mb-4 w-full'>
                         <span className='mr-2 w-[80px]'>School: </span>

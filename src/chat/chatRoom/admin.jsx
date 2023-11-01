@@ -65,7 +65,6 @@ export default function Admin(params) {
             if (data) {
                 if(data.username === docCookies.getItem("username")){
                     setAdminStatus(true);
-                    console.log(data.username);
                 } else {
                     setAdminStatus(false);
                 }

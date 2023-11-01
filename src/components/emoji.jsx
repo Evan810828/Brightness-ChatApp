@@ -4,7 +4,6 @@ export const EmojiPanel = (params) => {
   const emojis = ['😊', '😂', '🥺', '😍', '😒', '🙄', '😎', '🥳', '😏', '🤔'];
 
   const handleEmojiClick = (emoji) => {
-    console.log(`Clicked on: ${emoji}`);
     params.handleEmojiClick(emoji);
   };
 
