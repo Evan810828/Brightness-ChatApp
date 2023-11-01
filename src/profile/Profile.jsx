@@ -1,5 +1,6 @@
 import My from "./my/My";
 import Friends from "./friends/Friend";
+import Users from "./users/Users";
 import Inbox from "./inbox/Inbox";
 import Other from "./other/Other";
 import { useEffect, useState } from "react";
@@ -65,6 +66,9 @@ export default function Profile(params) {
                     </div>
                     <div className="bg-white rounded-lg shadow-xl w-full px-16 mb-8">
                         <Friends displayMute={true} displayAdd={false} />
+                    </div>
+                    <div className="bg-white rounded-lg shadow-xl w-full px-16 mb-8">
+                        <Users displayMute={true} displayAdd={false} username={username}/>
                     </div>
                     <div className="bg-white rounded-lg shadow-xl w-full px-16">
                         <Inbox />
