@@ -165,7 +165,7 @@ export default function ChatRoom(params) {
 
     const onLike = (i) => {
         let temp = chatData;
-        temp[i].reactList.push("like");
+        temp[i].likes.push("like");
         setChatData(temp);
         setTimer(timer+1);
     }
@@ -283,15 +283,15 @@ export default function ChatRoom(params) {
                                             <Avatar src={avatarLinks[item.avatar]} onClick={()=>window.location.href=`/profile/${item.senderName}`}/>
                                             <div className='ml-2'>
                                                 <div className='ml-1 text-sm mb-1'>{item.senderName}</div>
-                                                <div className='max-w-[300px] bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light'>{replaceURLs(item.content)}</div>
-                                                {/* {chatData[i].reactList.length > 0 ? 
+                                                <div className='max-w-[300px] bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light'>{item.content}</div>
+                                                {chatData[i].likes && chatData[i].likes.length > 0 ? 
                                                     <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
                                                         <div className='flex '>
                                                             <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3'/> 
-                                                            <Avatar className='!w-[1.5rem] !h-[1.5rem]' src="https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp" />
+                                                            <Avatar className='!w-[1.5rem] !h-[1.5rem]' src={avatarLinks[item.avatar]} />
                                                         </div>
                                                     </div> 
-                                                : null} */}
+                                                : null}
                                             </div>
                                         </div>
                                         <div className='relative h-min bg-white shadow-lg rounded px-2 pt-2 pb-1 left-2 hidden' id={i}>
@@ -314,15 +314,15 @@ export default function ChatRoom(params) {
                                             </div> :  null}
                                             <div className='mr-2 w-max items-edn'>
                                                 <div className='ml-1 text-sm mb-1 text-right'>{item.senderName}</div>
-                                                <div id={i+"m"} className='max-w-[300px] bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light w-max'>{replaceURLs(item.content)}</div>
-                                                {/* {chatData[i].reactList.length > 0 ? 
+                                                <div id={i+"m"} className='max-w-[300px] bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light w-max'>{item.content}</div>
+                                                {chatData[i].likes && chatData[i].likes.length > 0 ? 
                                                     <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
                                                         <div className='flex '>
                                                             <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3' /> 
-                                                            <Avatar className='!w-[1.5rem] !h-[1.5rem]' src="https://cdn.trendhunterstatic.com/thumbs/476/akutar.jpeg?auto=webp" />
+                                                            <Avatar className='!w-[1.5rem] !h-[1.5rem]' src={avatarLinks[item.avatar]} />
                                                         </div>
                                                     </div> 
-                                                : null} */}
+                                                : null}
                                             </div>
                                             <Avatar src={avatarLinks[item.avatar]} onClick={()=>window.location.href=`/profile/${item.senderName}`}  />
                                         </div>
