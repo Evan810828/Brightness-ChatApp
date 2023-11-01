@@ -247,9 +247,9 @@ export default function ChatRoom(params) {
                     </div>
                     <div  className='flex flex-col h-screen bg-chat'>
                         <div  ref={scrollRef} className='flex  flex-col h-[84vh] overflow-y-auto py-2 bg-[#F1F1F1]'>
-                            <div className='flex w-full justify-center mt-2'>
+                            {/* <div className='flex w-full justify-center mt-2'>
                                 <div className='bg-slate-300 text-white w-max px-2 rounded-lg text-sm'>11:20</div>
-                            </div>
+                            </div> */}
                             {chatData.map((item, i) => {
                                 if(item.status === 1){
                                     return (<div className='px-12 py-4 flex w-full justify-center' ><div className='max-w-[700px] bg-gray-300 px-3 pt-1 pb-2 rounded-lg text-sm font-light'>{replaceURLs(item.content)}</div></div>)

@@ -57,7 +57,7 @@ export default function My(params) {
                 </div>
                 <div className="w-full">
                     <div className="flex w-full justify-between items-center">
-                        <div className="text-3xl font-semibold mb-4">{username}</div>
+                        <div className="text-3xl font-semibold mb-4">{userData.username}</div>
                         {!edit?<IconEdit className="ml-2 text-slate-500 cursor-pointer" onClick={()=>{setEdit(true)}} />:
                         <div>
                             <Button className="ml-2" theme="solid" onClick={()=>{setEdit(false);updateUserInfo()}}>Save</Button>

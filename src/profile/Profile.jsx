@@ -41,7 +41,7 @@ export default function Profile(params) {
     }
 
     useEffect(() => {
-        setUsername(window.location.pathname.split('/')[2]);
+        setUsername(window.location.pathname.split('/')[2].replace(/%20/g, " "));
     }, []);
 
     return(
