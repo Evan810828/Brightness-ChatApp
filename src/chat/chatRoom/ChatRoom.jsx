@@ -309,7 +309,9 @@ export default function ChatRoom(params) {
                                                             <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
                                                                 <div className='flex '>
                                                                     <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3' /> 
-                                                                    <Avatar className='!w-[1.5rem] !h-[1.5rem]' src={avatarLinks[item.avatar]} />
+                                                                    {chatData[i].likes.map((item1,i1) => {
+                                                                        return <Avatar className='!w-[1.5rem] !h-[1.5rem]' src={avatarLinks[item1.avatar]} />
+                                                                    })}
                                                                 </div>
                                                             </div> 
                                                         : null}
@@ -374,7 +376,9 @@ export default function ChatRoom(params) {
                                                             <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
                                                                 <div className='flex '>
                                                                     <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3' /> 
-                                                                    <Avatar className='!w-[1.5rem] !h-[1.5rem]' src={avatarLinks[item.avatar]} />
+                                                                    {chatData[i].likes.map((item1,i1) => {
+                                                                        return <Avatar className='!w-[1.5rem] !h-[1.5rem]' src={avatarLinks[item1.avatar]} />
+                                                                    })}
                                                                 </div>
                                                             </div> 
                                                         : null}
