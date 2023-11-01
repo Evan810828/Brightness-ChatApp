@@ -1,6 +1,7 @@
 import { Avatar } from "@douyinfe/semi-ui";
 import { useEffect, useState } from "react";
 import { docCookies } from "../../components/header/cookie";
+import { avatarLinks } from "../../components/avatar";
 
 const messages = [
     {
@@ -151,7 +152,7 @@ export default function Inbox() {
                     <div key={i} className="my-2 py-2 flex justify-between w-full">
                         <div>
                             <div className="flex items-center">
-                                <Avatar size="small" src={item.avatar} shape="circle" />
+                                <Avatar size="small" src={avatarLinks[item.avatar]} shape="circle" />
                                 <div className="ml-2">{item.username}</div>
                             </div>
                             <div className="ml-10">
