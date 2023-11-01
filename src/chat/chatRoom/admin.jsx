@@ -20,6 +20,9 @@ export default function Admin(params) {
     const [banModalVisible, setBanModalVisible] = useState(false);
     const [bannedUser, setBannedUser] = useState(undefined)
     const [blockedUsers, setBlockedUsers] = useState([]);
+    const [reportModalVisible, setReportModalVisible] = useState(false);
+    const [reportReason, setReportReason] = useState('');
+    const [reportedUser, setReportedUser] = useState(undefined);
 
     
     const [friendList, setFriendList] = useState([]);
@@ -162,6 +165,23 @@ export default function Admin(params) {
         });
     }
 
+    const reportUser = (username) => {
+        fetch(`/chatroom/report`, {method:"POST", body: JSON.stringify({
+            username: username,
+            senderUsername: docCookies.getItem("username"),
+            reason: reportReason,
+            roomName: roomDetails.roomName
+        })}).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            Toast.success("User reported!");
+            setReportModalVisible(false);
+            getReportedUSers();
+        });
+    }
+
     const getReportedUSers = () => {
         fetch(`/list/chatroom/reported/${params.roomDetails.roomName}`, {method:"GET"}).then(res => {
             if (res.status === 200) {
@@ -189,6 +209,7 @@ export default function Admin(params) {
                 Toast.success("User banned!");
                 setRoomDetails(params.roomDetails);
                 getRoomMembers();
+                getBannedUsers();
             }
         });
     }
@@ -288,7 +309,7 @@ export default function Admin(params) {
                                                 </div>
                                             )
                                             :
-                                            <button className='bg-red-400 text-white px-3 py-1 rounded-lg text-sm' onClick={()=>{}}>Report</button>
+                                            <button className='bg-red-400 text-white px-3 py-1 rounded-lg text-sm' onClick={()=>{setReportedUser(item.username);setReportModalVisible(true)}}>Report</button>
                                         }
                                     </div>:
                                     <div className='flex items-center w-[70%] justify-start'>
@@ -361,6 +382,18 @@ export default function Admin(params) {
                     <div className='w-full flex justify-end'>
                         <Button className="mt-4" onClick={()=>{setBanModalVisible(false)}}>Cancel</Button>
                         <Button className="mt-4 ml-2" onClick={()=>{banUser(bannedUser);setBanModalVisible(false)}}>Ban</Button>
+                    </div>
+                </div>
+            </Modal>
+            <Modal visible={reportModalVisible} onCancel={()=>{setReportModalVisible(false)}} footer={null} header={null}>
+                <div className='p-4'>
+                    <div>
+                        <div className='mb-2'>Please specify your reason here</div>
+                        <Input className="w-full" value={reportReason} onChange={(value,e)=>{setReportReason(value)}} placeholder={"Report reason"} />
+                    </div>
+                    <div className='w-full flex justify-end'>
+                        <Button className="mt-4" onClick={()=>{setReportModalVisible(false)}}>Cancel</Button>
+                        <Button className="mt-4 ml-2" onClick={()=>{reportUser(reportedUser);setReportModalVisible(false)}}>Report</Button>
                     </div>
                 </div>
             </Modal>
