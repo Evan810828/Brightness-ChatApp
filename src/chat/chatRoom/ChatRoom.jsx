@@ -6,6 +6,7 @@ import Admin from './admin';
 import { avatarLinks } from "../../components/avatar";
 import { replaceURLs } from "../../components/linkFomatter";
 import EmojiPanel from '../../components/emoji';
+import { formatTimestamp } from '../../components/timeFomatter';
 
 export default function ChatRoom(params) {
     const [timer, setTimer] = useState(0);
@@ -238,8 +239,11 @@ export default function ChatRoom(params) {
                                             <div className='flex'>
                                                 <Avatar src={avatarLinks[item.avatar]} onClick={()=>window.location.href=`/profile/${item.senderName}`}/>
                                                 <div className='ml-2'>
-                                                    <div className='ml-1 text-sm mb-1'>{item.senderName}</div>
-                                                    <div className='max-w-[300px] bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light'>{replaceURLs(item.content)}</div>
+                                                    <div className='flex '>
+                                                        <div className='ml-1 text-sm mb-1'>{item.senderName}</div>
+                                                        <div className='ml-3 text-slate-400 text-sm'>{formatTimestamp(item.timestamp)}</div>
+                                                    </div>
+                                                    <div className='max-w-[400px] w-max bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light'>{replaceURLs(item.content)}</div>
                                                     {chatData[i].likes && chatData[i].likes.length > 0 ? 
                                                         <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
                                                             <div className='flex justify-between'>
@@ -269,7 +273,10 @@ export default function ChatRoom(params) {
                                                 <IconCheckboxTick />
                                                 </div> :  null}
                                                 <div className='mr-2 w-max items-edn'>
-                                                    <div className='ml-1 text-sm mb-1 text-right'>{item.senderName}</div>
+                                                    <div className='flex '>
+                                                        <div className='ml-1 text-slate-400 text-sm'>{formatTimestamp(item.timestamp)}</div>
+                                                        <div className='ml-3 text-sm mb-1'>{item.senderName}</div>
+                                                    </div>
                                                     <div id={i+"m"} className='max-w-[300px] bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light w-max'>{replaceURLs(item.content)}</div>
                                                     {chatData[i].likes && chatData[i].likes.length > 0 ? 
                                                         <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
@@ -292,7 +299,10 @@ export default function ChatRoom(params) {
                                             <div className='flex'>
                                                 <Avatar src={avatarLinks[item.avatar]} onClick={()=>window.location.href=`/profile/${item.senderName}`}/>
                                                 <div className='ml-2'>
-                                                    <div className='ml-1 text-sm mb-1'>{item.senderName}</div>
+                                                    <div className='flex '>
+                                                        <div className='ml-1 text-sm mb-1'>{item.senderName}</div>
+                                                        <div className='ml-3 text-slate-400 text-sm'>{formatTimestamp(item.timestamp)}</div>
+                                                    </div>
                                                     <div className='max-w-[300px] bg-white px-3 pt-1 pb-2 rounded-lg text-sm  text-red-500 font-bold'>{replaceURLs(item.content)}</div>
                                                     {chatData[i].likes && chatData[i].likes.length > 0 ? 
                                                         <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
@@ -323,7 +333,10 @@ export default function ChatRoom(params) {
                                                 <IconCheckboxTick />
                                                 </div> :  null}
                                                 <div className='mr-2 w-max items-edn'>
-                                                    <div className='ml-1 text-sm mb-1 text-right'>{item.senderName}</div>
+                                                    <div className='flex '>
+                                                        <div className='ml-1 text-slate-400 text-sm'>{formatTimestamp(item.timestamp)}</div>
+                                                        <div className='ml-3 text-sm mb-1'>{item.senderName}</div>
+                                                    </div>
                                                     <div id={i+"m"} className='max-w-[300px] bg-white px-3 pt-1 pb-2 rounded-lg text-sm  w-max text-red-500 font-bold'>{replaceURLs(item.content)}</div>
                                                     {chatData[i].likes && chatData[i].likes.length > 0 ? 
                                                         <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
