@@ -167,6 +167,12 @@ export default function ChatRoom(params) {
         let temp = chatData;
         temp[i].likes.push("like");
         setChatData(temp);
+        fetch(`/chatroom/message/reaction/${temp[i].msgID}`, {method:"POST", body: JSON.stringify({
+            username: username,
+            roomName: roomName,
+            reactionType: "like"
+          })
+        })
         setTimer(timer+1);
     }
 
