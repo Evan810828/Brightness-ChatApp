@@ -1,8 +1,24 @@
-export function replaceURLs(str) {
-    const urlRegex = /(\b(https?:\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|]))/ig;
-    const parts = str.split(urlRegex);
+export function replaceURLs(inputString) {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const parts = inputString.split(urlRegex);
   
-    return parts.map((part, i) => 
-      urlRegex.test(part) ? <a key={i} href={part} target="_blank" rel="noopener noreferrer">{part}</a> : part
+    return (
+      <>
+        {parts.map((part, index) =>
+          urlRegex.test(part) ? (
+            <a
+              key={index}
+              href={part}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline"
+            >
+              {part}
+            </a>
+          ) : (
+            <span key={index}>{part}</span>
+          )
+        )}
+      </>
     );
   }
