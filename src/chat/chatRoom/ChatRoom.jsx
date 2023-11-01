@@ -1,9 +1,10 @@
 import { Avatar, Image, Input } from '@douyinfe/semi-ui';
-import { IconEmoji, IconLikeThumb, IconDislikeThumb, IconEdit,IconCheckboxTick } from '@douyinfe/semi-icons';
+import { IconEmoji, IconLikeThumb, IconDislikeThumb, IconEdit,IconCheckboxTick,IconDelete } from '@douyinfe/semi-icons';
 import { docCookies } from '../../components/header/cookie';
 import React, { useEffect, useState,useRef  } from 'react';
 import Admin from './admin';
 import { avatarLinks } from "../../components/avatar";
+import { replaceURLs } from "../../components/linkFomatter";
 
 let data = [
     {
@@ -135,7 +136,19 @@ export default function ChatRoom(params) {
         setMode("edit");
         setEditIndex(i);
     }
-
+    const deleteMessage = (i) => {
+        fetch(`/chatroom/message/${roomName}_${chatData[i].msgID}`, {method:"DELETE"}).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(data => {
+            if (data) {
+            }
+        });
+        const newItems = chatData.filter((_, index) => index !== i);
+        setChatData(newItems);
+        
+    }
     const onEdit = () => {
         let temp = chatData;
         temp[editIndex].content = inputValue;
@@ -270,7 +283,7 @@ export default function ChatRoom(params) {
                                             <Avatar src={avatarLinks[item.avatar]} onClick={()=>window.location.href=`/profile/${item.senderName}`}/>
                                             <div className='ml-2'>
                                                 <div className='ml-1 text-sm mb-1'>{item.senderName}</div>
-                                                <div className='max-w-[300px] bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light'>{item.content}</div>
+                                                <div className='max-w-[300px] bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light'>{replaceURLs(item.content)}</div>
                                                 {/* {chatData[i].reactList.length > 0 ? 
                                                     <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
                                                         <div className='flex '>
@@ -291,8 +304,8 @@ export default function ChatRoom(params) {
                                     <div key={i} className='px-12 py-4 flex w-full justify-end' onMouseOver={()=>{changeContextShow(i, "block")}} onMouseOut={()=>{changeContextShow(i, "none")}}>
                                         <div className='relative h-min bg-white shadow-lg rounded px-2 pt-2 pb-1 right-2 hidden' id={i}>
                                             <IconEdit className='hover:scale-[1.2] cursor-pointer !text-xl mr-3' onClick={()=>{editMessage(i)}} />
+                                            <IconDelete className='!text-blue-400 hover:scale-[1.2] cursor-pointer !text-xl' onClick ={()=>{deleteMessage(i)}} />
                                             <IconLikeThumb className='!text-red-400 hover:scale-[1.2] cursor-pointer !text-xl mr-3' onClick={()=>{onLike(i)}} />
-                                            <IconDislikeThumb className='!text-blue-400 hover:scale-[1.2] cursor-pointer !text-xl' />
                                         </div>
                                         <div className='flex'>
                                             
@@ -301,7 +314,7 @@ export default function ChatRoom(params) {
                                             </div> :  null}
                                             <div className='mr-2 w-max items-edn'>
                                                 <div className='ml-1 text-sm mb-1 text-right'>{item.senderName}</div>
-                                                <div id={i+"m"} className='max-w-[300px] bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light w-max'>{item.content}</div>
+                                                <div id={i+"m"} className='max-w-[300px] bg-white px-3 pt-1 pb-2 rounded-lg text-sm font-light w-max'>{replaceURLs(item.content)}</div>
                                                 {/* {chatData[i].reactList.length > 0 ? 
                                                     <div className='px-2 py-2 bg-slate-100 text-sm w-max'>
                                                         <div className='flex '>
