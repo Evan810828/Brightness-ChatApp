@@ -12,13 +12,14 @@ export default function Profile(params) {
     const [username, setUsername] = useState('');
     const [roomName, setRoomName] = useState('');
     const [roomType, setRoomType] = useState('public');
+    const base = "https://dg76-comp504-chat-api-0a154efee1fc.herokuapp.com"
 
     const createChatroom = () => {
         if (roomName === '') {
             Toast.error("Room name cannot be empty!");
             return;
         }
-        fetch(`/chatroom/create`, {method:"POST",
+        fetch(base+`/chatroom/create`, {method:"POST",
             body: JSON.stringify({
                 username: username,
                 roomName: roomName,

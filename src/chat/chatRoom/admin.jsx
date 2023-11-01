@@ -26,9 +26,10 @@ export default function Admin(params) {
 
     
     const [friendList, setFriendList] = useState([]);
+    const base = "https://dg76-comp504-chat-api-0a154efee1fc.herokuapp.com"
 
     const getFriendList = () => {
-        fetch(`/user/friends/${docCookies.getItem("username")}`, {method:"GET"}).then(res => {
+        fetch(base+`/user/friends/${docCookies.getItem("username")}`, {method:"GET"}).then(res => {
             if (res.status === 200) {
                 return res.json();
             }
@@ -44,7 +45,7 @@ export default function Admin(params) {
     }, []);
 
     const getRoomMembers = () => {
-        fetch(`/list/chatroom/members/${params.roomDetails.roomName}`, {method:"GET"}).then(res => {
+        fetch(base+`/list/chatroom/members/${params.roomDetails.roomName}`, {method:"GET"}).then(res => {
             if (res.status === 200) {
                 return res.json();
             }
@@ -73,7 +74,7 @@ export default function Admin(params) {
     }
 
     const inviteFriend = (friendName) => {
-        fetch(`/chatroom/invite/${roomDetails.roomName}`, {method:"POST",body: JSON.stringify({
+        fetch(base+`/chatroom/invite/${roomDetails.roomName}`, {method:"POST",body: JSON.stringify({
                 username: friendName,
                 senderUsername: docCookies.getItem("username"),
             })
@@ -89,7 +90,7 @@ export default function Admin(params) {
     }
 
     const setRoomName = () => {
-        fetch(`/chatroom/setRoomName`, {method:"POST",body: JSON.stringify({
+        fetch(base+`/chatroom/setRoomName`, {method:"POST",body: JSON.stringify({
             roomName: roomDetails.roomName,
             newRoomName: newRoomName
         })}).then(res => {
@@ -104,7 +105,7 @@ export default function Admin(params) {
     }
 
     const kickUser = (username) => {
-        fetch(`/chatroom/leave/${roomDetails.roomName}`, {method:"POST",body: JSON.stringify({
+        fetch(base+`/chatroom/leave/${roomDetails.roomName}`, {method:"POST",body: JSON.stringify({
             username: username
         })}).then(res => {
             if (res.status === 200) {
@@ -120,7 +121,7 @@ export default function Admin(params) {
     }
 
     const blockUser = (username) => {
-        fetch(`/chatroom/block`, {method:"POST",body: JSON.stringify({
+        fetch(base+`/chatroom/block`, {method:"POST",body: JSON.stringify({
             senderName: docCookies.getItem("username"),
             receiverName: username,
         })}).then(res => {
@@ -138,7 +139,7 @@ export default function Admin(params) {
     }
 
     const getBlockList = () => {
-        fetch(`/user/blockList/${docCookies.getItem('username')}`, {method:"GET"}).then(res => {
+        fetch(base+`/user/blockList/${docCookies.getItem('username')}`, {method:"GET"}).then(res => {
             if (res.status === 200) {
                 return res.json();
             }
@@ -148,7 +149,7 @@ export default function Admin(params) {
     }
 
     const unblockUser = (username) => {
-        fetch(`/chatroom/unblock`, {method:"POST",body: JSON.stringify({
+        fetch(base+`/chatroom/unblock`, {method:"POST",body: JSON.stringify({
             senderName: docCookies.getItem("username"),
             receiverName: username,
         })}).then(res => {
@@ -166,7 +167,7 @@ export default function Admin(params) {
     }
 
     const reportUser = (username) => {
-        fetch(`/chatroom/report`, {method:"POST", body: JSON.stringify({
+        fetch(base+`/chatroom/report`, {method:"POST", body: JSON.stringify({
             username: username,
             senderUsername: docCookies.getItem("username"),
             reason: reportReason,
@@ -183,7 +184,7 @@ export default function Admin(params) {
     }
 
     const getReportedUSers = () => {
-        fetch(`/list/chatroom/reported/${params.roomDetails.roomName}`, {method:"GET"}).then(res => {
+        fetch(base+`/list/chatroom/reported/${params.roomDetails.roomName}`, {method:"GET"}).then(res => {
             if (res.status === 200) {
                 return res.json();
             }
@@ -195,7 +196,7 @@ export default function Admin(params) {
     }
 
     const banUser = (username) => {
-        fetch(`/chatroom/ban`, {method:"POST",body: JSON.stringify({
+        fetch(base+`/chatroom/ban`, {method:"POST",body: JSON.stringify({
             username: username,
             senderUsername: docCookies.getItem("username"),
             reason: banReason,
@@ -215,7 +216,7 @@ export default function Admin(params) {
     }
 
     const getBannedUsers = () => {
-        fetch(`/list/chatroom/banned/${params.roomDetails.roomName}`, {method:"GET"}).then(res => {
+        fetch(base+`/list/chatroom/banned/${params.roomDetails.roomName}`, {method:"GET"}).then(res => {
             if (res.status === 200) {
                 return res.json();
             }

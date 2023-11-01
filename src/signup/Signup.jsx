@@ -9,7 +9,7 @@ export default function Signup() {
     const [school, setSchool] = useState('');
     const [interests, setInterests] = useState('');
     const [birthday, setBirthday] = useState('');
-
+    const base = "https://dg76-comp504-chat-api-0a154efee1fc.herokuapp.com"
     const handleSubmit = () => {
         if (username === '' || password === '' || confirmPassword === '' || school === '' || interests === '') {
             Toast.error("Please fill in all the information!");
@@ -21,7 +21,7 @@ export default function Signup() {
         }
         // remove the whitespaces and split the interests
         const interestsList = interests.replace(/\s/g, '').split(',');
-        fetch("/register", {
+        fetch(base+"/register", {
             method: 'POST',
             body: JSON.stringify({
                 "username": username,
