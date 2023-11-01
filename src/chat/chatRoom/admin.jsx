@@ -57,7 +57,7 @@ export default function Admin(params) {
     }
 
     const getAdminStatus = () => {
-        fetch(`/chatroom/admin/${params.roomDetails.roomName}`, {method:"GET"}).then(res => {
+        fetch(base+`/chatroom/admin/${params.roomDetails.roomName}`, {method:"GET"}).then(res => {
             if (res.status === 200) {
                 return res.json();
             }
