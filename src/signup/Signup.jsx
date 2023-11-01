@@ -21,7 +21,7 @@ export default function Signup() {
         }
         // remove the whitespaces and split the interests
         const interestsList = interests.replace(/\s/g, '').split(',');
-        fetch("/register", {
+        fetch("https://dg76-comp504-chat-api-0a154efee1fc.herokuapp.com/register", {
             method: 'POST',
             body: JSON.stringify({
                 "username": username,
