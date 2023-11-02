@@ -27,8 +27,12 @@ export default function Header() {
     const base = "https://dg76-comp504-chat-api-0a154efee1fc.herokuapp.com"
 
     const logout = () => {
+        const username = docCookies.getItem("username");
+        docCookies.removeItem("username")
+        console.log(docCookies.getItem("username"))
+
         fetch(base+`/user/setActive`, {method:"POST", body: JSON.stringify({
-            username: docCookies.getItem("username"),
+            username: username,
             activeStatus: false
           })
         }).then(res => {
@@ -37,10 +41,9 @@ export default function Header() {
             }
         }).then(data => {
             if (data) {
+                window.location.href="/login"
             }
         });
-        docCookies.removeItem("username")
-        window.location.href="/login"
     }
 
     return (

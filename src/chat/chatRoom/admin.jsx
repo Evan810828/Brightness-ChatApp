@@ -244,8 +244,9 @@ export default function Admin(params) {
                         <Image className="w-[80px] h-[80px] !rounded-[40px] mr-4" src={require('../../chatBackground.jpg')} />
                         <div className='flex items-center mt-4'>
                             <div className='text-xl mr-4'>
-                                {!edit?roomDetails.roomName
-                                :<Input value={newRoomName} onChange={(value,e)=>{setNewRoomName(value)}} />}
+                                {/* {!edit?roomDetails.roomName
+                                :<Input value={newRoomName} onChange={(value,e)=>{setNewRoomName(value)}} />} */}
+                                {roomDetails.roomName}
                             </div>
                             {adminStatus&&(!edit?<IconEdit className="ml-2 text-slate-500 cursor-pointer" onClick={()=>{setEdit(true)}} />:
                             <div>
