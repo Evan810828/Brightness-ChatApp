@@ -89,9 +89,9 @@ export default function Admin(params) {
     }
 
     const setRoomName = () => {
-        fetch(base+`/chatroom/setRoomName`, {method:"POST",body: JSON.stringify({
+        fetch(base+`/chatroom/setCapacity`, {method:"POST",body: JSON.stringify({
             roomName: roomDetails.roomName,
-            newRoomName: newRoomName
+            capacity: newCapacity
         })}).then(res => {
             if (res.status === 200) {
                 return res.json();
